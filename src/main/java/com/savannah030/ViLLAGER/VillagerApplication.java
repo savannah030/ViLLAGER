@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ViLlagerApplication {
+public class VillagerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ViLlagerApplication.class, args);
+		SpringApplication.run(VillagerApplication.class, args);
 	}
 
 }
