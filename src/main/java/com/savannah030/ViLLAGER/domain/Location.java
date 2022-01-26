@@ -1,10 +1,10 @@
 package com.savannah030.ViLLAGER.domain;
 
-public class Position {
+public class Location {
     private double latitude;
     private double longitude;
 
-    public Position(double latitude, double longitude){
+    public Location(double latitude, double longitude){
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -14,10 +14,10 @@ public class Position {
     }
 
     public double getLongitude(){
-        return this.latitude;
+        return this.longitude;
     }
 
-    public Position getPosition(){
+    public Location getLocation(){
         return this;
     }
 }

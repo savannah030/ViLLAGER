@@ -39,12 +39,12 @@ public class JpaMappingTest {
                     .longitude(testLoc.getLongitude()).build());
         }
     }
-    /*
+
     @After
     public void cleanup(){
         boardRepository.deleteAll();
     }
-    */
+
     @Test
     public void 제대로_생성됐는지_테스트(){
         Board board = boardRepository.findByLatitude(0.001+37.48603206504228);

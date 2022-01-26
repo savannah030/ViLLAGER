@@ -1,6 +1,7 @@
 package com.savannah030.ViLLAGER.controller;
 
-import com.savannah030.ViLLAGER.domain.Position;
+import com.savannah030.ViLLAGER.domain.Location;
+import com.savannah030.ViLLAGER.repository.BoardRepository;
 import com.savannah030.ViLLAGER.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +15,21 @@ import org.springframework.ui.Model;
 public class PlaceController {
 
     @Autowired
+    private BoardRepository boardRepository;
+
+    @GetMapping({"", "/"})
+    public String place(Model model){
+        model.addAttribute("boardList", boardRepository.findAll());
+        return "place";
+    }
+    /*
+    @Autowired
     private PlaceService placeService;
 
-    /*
     @GetMapping({"", "/"})
-    public String place(@RequestParam(value = "position",defaultValue = 현재위치) Position position, Model model){
+    public String place(Position position, Model model){
         model.addAttribute("place", placeService.findNearPlaces());
     }
-     */
+    */
+
 }
