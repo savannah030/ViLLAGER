@@ -43,4 +43,11 @@ public class Board implements Serializable {
         this.longitude = longitude;
         //this.position = position;
     }
+
+    public void update(Board board){
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.latitude = board.getLatitude();
+        this.longitude = board.getLongitude();
+    }
 }
