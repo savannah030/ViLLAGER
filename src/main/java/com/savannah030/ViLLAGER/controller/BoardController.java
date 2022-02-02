@@ -19,14 +19,12 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    /**
-     *
-     * @RequestParam HTTP 요청 파라미터의 값을 메서드의 파라미터로 전달
-     */
+
     @GetMapping("/form-save")
     public String formSave() {
         return "/board/form-save";
     }
+
 
     @GetMapping("/form-update")
     public String formUpdate(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
