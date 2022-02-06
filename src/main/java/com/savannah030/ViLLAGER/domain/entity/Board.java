@@ -1,5 +1,6 @@
-package com.savannah030.ViLLAGER.domain;
+package com.savannah030.ViLLAGER.domain.entity;
 
+import com.savannah030.ViLLAGER.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table
-public class Board implements Serializable {
+public class Board extends BaseEntity implements Serializable {
+
+    /**
+     * @GeneratedValue 기본키 자동생성
+     * @ IDENTITY 데이터베이스에 위임
+     */
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +28,6 @@ public class Board implements Serializable {
 
     @Column
     private String content;
-
-    /*
-    @Column
-    private Position position;
-    */
 
     @Column
     private double latitude;
@@ -41,7 +42,6 @@ public class Board implements Serializable {
         this.content = content;
         this.latitude = latitude;
         this.longitude = longitude;
-        //this.position = position;
     }
 
     public void update(Board board){
