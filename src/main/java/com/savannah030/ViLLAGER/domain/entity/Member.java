@@ -17,7 +17,7 @@ import java.util.List;
 public class Member extends BaseEntity implements Serializable {
 
     @Id
-    @Column(name = "MEMBER_IDX") 
+    @Column(name = "MEMBER_IDX")
     private Long idx;
 
     @Column
