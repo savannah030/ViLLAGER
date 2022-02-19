@@ -19,17 +19,17 @@ public class Like {
 
     @ManyToOne
     @JoinColumn(name = "member_idx")
-    private Member member;
+    private Member likeMember;
 
     @ManyToOne
     @JoinColumn(name = "board_idx")
-    private Board board;
+    private Board likeBoard;
 
     @Builder
     public Like(Long idx, Member member, Board board){
         this.idx = idx;
-        this.member = member;
-        this.board = board;
+        this.likeMember = member;
+        this.likeBoard = board;
     }
 
 }
