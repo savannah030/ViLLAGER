@@ -19,7 +19,7 @@ public class Board extends BaseEntity implements Serializable {
      * @ IDENTITY 데이터베이스에 위임
      */
     @Id
-    @Column
+    @Column(name = "board_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
@@ -34,6 +34,10 @@ public class Board extends BaseEntity implements Serializable {
 
     @Column
     private double longitude;
+
+    @ManyToOne
+    @JoinColumn(name = "member_idx")
+    private Member member;
 
     @Builder
     public Board(Long idx, String title, String content, Double latitude, Double longitude){
