@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -42,8 +44,12 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "member_idx") // NOTE: 연관관계 매핑(객체와 테이블 연결)
     private Member ownMember; // 이 board를 작성한 사람
 
+    @OneToMany(mappedBy = "likeBoard")
+    private List<Like> likeMembers = new ArrayList<>();
+
     @Builder
-    public Board(Long idx, CategoryType categoryType, String title, String content, StatusType statusType, Long hits, Address address){
+    public Board(Long idx, CategoryType categoryType, String title, String content,
+                 StatusType statusType, Long hits, Address address, List<Like> likeMembers){
         this.idx = idx;
         this.categoryType = categoryType;
         this.title = title;
@@ -51,6 +57,7 @@ public class Board extends BaseEntity {
         this.statusType = statusType;
         this.hits = hits;
         this.address = address; // TODO: 주소 설정 어떻게?
+        this.likeMembers = likeMembers; // FIXME: 컬렉션인데 초기화 이렇게 하는 게 맞는걸까?
     }
 
     //FIXME: 영속성 컨텍스트
