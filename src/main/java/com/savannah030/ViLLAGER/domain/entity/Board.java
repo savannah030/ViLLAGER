@@ -1,27 +1,28 @@
 package com.savannah030.ViLLAGER.domain.entity;
 
 import com.savannah030.ViLLAGER.domain.BaseEntity;
+import com.savannah030.ViLLAGER.domain.components.Address;
+import com.savannah030.ViLLAGER.domain.enums.CategoryType;
+import com.savannah030.ViLLAGER.domain.enums.StatusType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Table
-public class Board extends BaseEntity implements Serializable {
+public class Board extends BaseEntity {
 
-    /**
-     * @GeneratedValue 기본키 자동생성
-     * @ IDENTITY 데이터베이스에 위임
-     */
     @Id
     @Column(name = "board_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+
+    @Enumerated(EnumType.STRING)
+    private CategoryType categoryType;
 
     @Column
     private String title;
@@ -29,29 +30,36 @@ public class Board extends BaseEntity implements Serializable {
     @Column
     private String content;
 
-    @Column
-    private double latitude;
+    @Enumerated(EnumType.STRING)
+    private StatusType statusType;
 
     @Column
-    private double longitude;
+    private Long hits;
+
+    @Embedded Address address;
 
     @ManyToOne
-    @JoinColumn(name = "member_idx")
-    private Member member;
+    @JoinColumn(name = "member_idx") // NOTE: 연관관계 매핑(객체와 테이블 연결)
+    private Member ownMember; // 이 board를 작성한 사람
 
     @Builder
-    public Board(Long idx, String title, String content, Double latitude, Double longitude){
+    public Board(Long idx, CategoryType categoryType, String title, String content, StatusType statusType, Long hits, Address address){
         this.idx = idx;
+        this.categoryType = categoryType;
         this.title = title;
         this.content = content;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.statusType = statusType;
+        this.hits = hits;
+        this.address = address; // TODO: 주소 설정 어떻게?
     }
 
+    //FIXME: 영속성 컨텍스트
     public void update(Board board){
+        this.categoryType = board.getCategoryType();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.latitude = board.getLatitude();
-        this.longitude = board.getLongitude();
+        this.statusType = board.getStatusType();
+        // 조회수는 업데이트할 필요없음
+        this.address = board.getAddress(); // TODO: 주소 업데이트는 어떻게?
     }
 }

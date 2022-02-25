@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table
-public class Member extends BaseEntity implements Serializable {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_idx")
@@ -30,12 +30,12 @@ public class Member extends BaseEntity implements Serializable {
     private String password;
 
     //NOTE: 사용자가쓴글과 사용자는 다대일 관계
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY) // 지연 로딩(연관된 엔티티를 실제 사용할 때 조회)
-    private List<Board> myBoards = new ArrayList<Board>();
+    @OneToMany(mappedBy = "ownMember", fetch = FetchType.LAZY) // 지연 로딩(연관된 엔티티를 실제 사용할 때 조회)
+    private List<Board> myBoards = new ArrayList<>();
 
-    //NOTE: 사용자가좋아한글과 글은 다대다 관계
+    //NOTE: 사용자가좋아한글과 사용자는 다대다 관계
     @OneToMany(mappedBy = "likeMember")
-    private List<Like> likeBoards = new ArrayList<Like>();
+    private List<Like> likeBoards = new ArrayList<>();
 
     @Builder
     public Member(Long idx, String memberName, String email, String password, List<Board> myBoards, List<Like> likeBoards) {
