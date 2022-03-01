@@ -9,11 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor // 기본 생성자 만들어줌
 @Entity
 @Table
 public class Board extends BaseEntity {
@@ -45,28 +45,49 @@ public class Board extends BaseEntity {
     private Member ownMember; // 이 board를 작성한 사람
 
     @OneToMany(mappedBy = "likeBoard")
-    private List<Like> likeMembers = new ArrayList<>();
+    private Set<Like> likeMembers = new LinkedHashSet<>(); // CONFUSED: final 붙여야되나?
 
+    // NOTE: 생성자 상단에 선언 시 생성자에 포함된 필드만 빌더에 포함
     @Builder
-    public Board(Long idx, CategoryType categoryType, String title, String content,
-                 StatusType statusType, Long hits, Address address, List<Like> likeMembers){
-        this.idx = idx;
+    public Board(CategoryType categoryType, String title, String content, Address address){
+        //this.idx = idx; // NOTE: GenerationType.IDENTITY 기본키 자동생성 데이터베이스에 위임
         this.categoryType = categoryType;
         this.title = title;
         this.content = content;
-        this.statusType = statusType;
-        this.hits = hits;
-        this.address = address; // TODO: 주소 설정 어떻게?
-        this.likeMembers = likeMembers; // FIXME: 컬렉션인데 초기화 이렇게 하는 게 맞는걸까?
+        this.statusType = StatusType.ONSALE;    // 처음 등록한 글은 무조건 '판매중'
+        this.hits = Long.valueOf("0");          // 조회수는 0으로 초기화
+        this.address = address;                 // TODO: 주소 설정 어떻게?
+
     }
 
-    //FIXME: 영속성 컨텍스트
-    public void update(Board board){
+    // NOTE: 영속성 컨텍스트
+    public void update(Board board){ //FIXME: 함수이름 updateBoard로 고치기
         this.categoryType = board.getCategoryType();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.statusType = board.getStatusType();
         // 조회수는 업데이트할 필요없음
         this.address = board.getAddress(); // TODO: 주소 업데이트는 어떻게?
+    }
+
+    public void updateHits(Board board){
+        this.hits += 1;
+    }
+
+    public void addLikeMember(Like like){ // CONFUSED: 파라미터 Like 대신 Member쓰면 안되나?
+        this.likeMembers.add(like);
+    }
+
+    // CONFUSED: update 함수 있는데 굳이 status만 바꾸는 함수들 만들어야할까?
+    public void makeBoardOnSale(){ // FIXME: 함수명 뭘로..
+        this.statusType = StatusType.ONSALE;
+    }
+
+    public void makeBoardReserved(){ // FIXME: 함수명 뭘로..
+        this.statusType = StatusType.RESERVED;
+    }
+
+    public void makeBoardSoldOut(){ // FIXME: 함수명 뭘로..
+        this.statusType = StatusType.SOLDOUT;
     }
 }
