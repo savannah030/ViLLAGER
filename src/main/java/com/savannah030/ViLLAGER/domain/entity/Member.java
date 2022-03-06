@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -18,6 +18,7 @@ public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_idx")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
     @Column
@@ -30,20 +31,27 @@ public class Member extends BaseEntity {
     private String password;
 
     //NOTE: 사용자가쓴글과 사용자는 다대일 관계
-    @OneToMany(mappedBy = "ownMember", fetch = FetchType.LAZY) // 지연 로딩(연관된 엔티티를 실제 사용할 때 조회)
-    private List<Board> myBoards = new ArrayList<>();
+    @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY) // 지연 로딩(연관된 엔티티를 실제 사용할 때 조회)
+    private List<Board> myBoards = new ArrayList<>(); //FIXME
 
     //NOTE: 사용자가좋아한글과 사용자는 다대다 관계
-    @OneToMany(mappedBy = "likeMember")
-    private List<Like> likeBoards = new ArrayList<>();
+    @OneToMany(mappedBy = "likeMember", fetch = FetchType.LAZY)
+    private List<Like> likeBoards = new ArrayList<>(); //FIXME
+
+    @OneToMany(mappedBy = "candBuyer", fetch = FetchType.LAZY)
+    private List<Chatroom> chatrooms = new LinkedList<>();
+
 
     @Builder
-    public Member(Long idx, String memberName, String email, String password, List<Board> myBoards, List<Like> likeBoards) {
-        this.idx = idx;
+    public Member(String memberName, String email, String password) {
         this.memberName = memberName;
         this.email = email;
         this.password = password;
-        this.myBoards = myBoards;
-        this.likeBoards = likeBoards;
+        //this.myBoards = myBoards;
+        //this.likeBoards = likeBoards;
     }
+
+    // TODO: 비밀번호 변경
+
+
 }
