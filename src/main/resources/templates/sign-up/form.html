@@ -1,0 +1,41 @@
+<!--step1-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Board Form</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div th:replace="layout/header::header"></div>
+<div class="signup-form">
+    <h1>회원가입</h1>
+    <!-- memberId(아이디),memberName(이름), email(이메일), password(비밀번호)-->
+    <form th:object="${signUpRequest}" method="post">
+        <p>
+            <label>아이디
+                <input th:text="*{memberId}">
+            </label>
+        </p>
+        <p>
+            <label>이름
+                <input th:text="*{memberName}">
+            </label>
+        </p>
+        <p>
+            <label>이메일
+                <input th:text="*{email}">
+            </label>
+        </p>
+        <p>
+            <label>비밀번호
+                <input th:text="*{password}"> <!--FIXME: 비밀번호 안보이게 만들어야함-->
+            </label>
+        </p>
+        <input type="submit" value="회원가입">
+    </form>
+</div>
+<div th:replace="layout/footer::footer"></div>
+</body>
+</html>
