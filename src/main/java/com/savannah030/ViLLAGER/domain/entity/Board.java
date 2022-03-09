@@ -1,27 +1,30 @@
 package com.savannah030.ViLLAGER.domain.entity;
 
 import com.savannah030.ViLLAGER.domain.BaseEntity;
+import com.savannah030.ViLLAGER.domain.components.Address;
+import com.savannah030.ViLLAGER.domain.enums.CategoryType;
+import com.savannah030.ViLLAGER.domain.enums.StatusType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor // 기본 생성자 만들어줌
 @Entity
 @Table
-public class Board extends BaseEntity implements Serializable {
+public class Board extends BaseEntity {
 
-    /**
-     * @GeneratedValue 기본키 자동생성
-     * @ IDENTITY 데이터베이스에 위임
-     */
     @Id
-    @Column
+    @Column(name = "board_idx")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
+
+    @Enumerated(EnumType.STRING)
+    private CategoryType categoryType;
 
     @Column
     private String title;
@@ -29,25 +32,62 @@ public class Board extends BaseEntity implements Serializable {
     @Column
     private String content;
 
-    @Column
-    private double latitude;
+    @Enumerated(EnumType.STRING)
+    private StatusType statusType;
 
     @Column
-    private double longitude;
+    private Long hits;
 
+    @Embedded Address address;
+
+    @ManyToOne
+    @JoinColumn(name = "member_idx") // NOTE: 연관관계 매핑(객체와 테이블 연결)
+    private Member ownMember; // 이 board를 작성한 사람
+
+    @OneToMany(mappedBy = "likeBoard")
+    private Set<Like> likeMembers = new LinkedHashSet<>(); // CONFUSED: final 붙여야되나?
+
+    // NOTE: 생성자 상단에 선언 시 생성자에 포함된 필드만 빌더에 포함
     @Builder
-    public Board(Long idx, String title, String content, Double latitude, Double longitude){
-        this.idx = idx;
+    public Board(CategoryType categoryType, String title, String content, Address address){
+        //this.idx = idx; // NOTE: GenerationType.IDENTITY 기본키 자동생성 데이터베이스에 위임
+        this.categoryType = categoryType;
         this.title = title;
         this.content = content;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.statusType = StatusType.ONSALE;    // 처음 등록한 글은 무조건 '판매중'
+        this.hits = Long.valueOf("0");          // 조회수는 0으로 초기화
+        this.address = address;                 // TODO: 주소 설정 어떻게?
+
     }
 
-    public void update(Board board){
+    // NOTE: 영속성 컨텍스트
+    public void update(Board board){ //FIXME: 함수이름 updateBoard로 고치기
+        this.categoryType = board.getCategoryType();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.latitude = board.getLatitude();
-        this.longitude = board.getLongitude();
+        this.statusType = board.getStatusType();
+        // 조회수는 업데이트할 필요없음
+        this.address = board.getAddress(); // TODO: 주소 업데이트는 어떻게?
+    }
+
+    public void updateHits(Board board){
+        this.hits += 1;
+    }
+
+    public void addLikeMember(Like like){ // CONFUSED: 파라미터 Like 대신 Member쓰면 안되나?
+        this.likeMembers.add(like);
+    }
+
+    // CONFUSED: update 함수 있는데 굳이 status만 바꾸는 함수들 만들어야할까?
+    public void makeBoardOnSale(){ // FIXME: 함수명 뭘로..
+        this.statusType = StatusType.ONSALE;
+    }
+
+    public void makeBoardReserved(){ // FIXME: 함수명 뭘로..
+        this.statusType = StatusType.RESERVED;
+    }
+
+    public void makeBoardSoldOut(){ // FIXME: 함수명 뭘로..
+        this.statusType = StatusType.SOLDOUT;
     }
 }
