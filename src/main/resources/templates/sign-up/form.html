@@ -1,4 +1,5 @@
 <!--step1-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,26 +13,21 @@
 <div class="signup-form">
     <h1>회원가입</h1>
     <!-- memberId(아이디),memberName(이름), email(이메일), password(비밀번호)-->
-    <form th:object="${signUpRequest}" method="post">
+    <form th:action="@{/member/sign-up}" th:object="${signUpForm}" method="post">
         <p>
-            <label>아이디
-                <input th:text="*{memberId}">
-            </label>
+            <label for="memberId">아이디</label>
+            <input id= "memberId" th:field="*{memberId}" th:class="${#fields.hasErrors('memberId')}">
+            <small th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}"></small>
         </p>
         <p>
-            <label>이름
-                <input th:text="*{memberName}">
-            </label>
+            <label for="memberName">이름</label>
+            <input id="memberName" th:field="*{memberName}" th:class="${#fields.hasErrors('memberName')}">
+            <small th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}"></small>
         </p>
         <p>
-            <label>이메일
-                <input th:text="*{email}">
-            </label>
-        </p>
-        <p>
-            <label>비밀번호
-                <input th:text="*{password}"> <!--FIXME: 비밀번호 안보이게 만들어야함-->
-            </label>
+            <label for="password">비밀번호</label>
+            <input id="password" th:type="password" th:field="*{password}">
+            <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
         </p>
         <input type="submit" value="회원가입">
     </form>
