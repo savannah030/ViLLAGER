@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>에러 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div th:replace="layout/header::header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>에러 페이지</h1>
+    </div>
+    <br/>
+    <!-- NOTE: 타임리프 변수 cannot resolve 뜨는 이유는
+            GlobalControllerAdvice의 redirectMap(변수 저장되어있는 컬렉션)이
+            @PostConstruct가 선언된 메소드에서 초기화되기 때문인듯
+            즉, 변수가 WAS가 띄워질 때 실행되므로 intellij에서 인식을 못해서 그런듯 -->
+        <th:block th:if="${errorCode}">
+            <div id="errorCode" th:text="${errorCode}" style="display:none"></div>
+        </th:block>
+        <th:block th:if="${redirectURL}">
+            <div id="redirectURL" th:text="${redirectURL}" style="display:none"></div>
+        </th:block>
+</div>
+<div th:replace="layout/footer::footer"></div>
+</body>
+<script>
+    const errorMessage = document.getElementById("errorCode").innerHTML;
+    const redirectURL = document.getElementById("redirectURL").innerHTML;
+
+    alert("에러 상황 발생 : " + errorMessage);
+    window.location.href = redirectURL;
+</script>
+</html>
