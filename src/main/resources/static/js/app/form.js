@@ -36,14 +36,8 @@ const form = {
             categoryType: $('#board_category').val(),
             title: $('#board_title').val(),
             content: $('#board_content').val(),
-            /**
-             * NOTE: Board 엔티티에 Address를 임베디드 타입으로 선언했으므로
-             *  json도 중첩문으로 써야함
-             */
-            address: {
-                latitude: lat,
-                longitude: lon,
-            }
+            latitude: lat,
+            longitude: lon,
         });
         console.log("jsonData: ",jsonData); //ok
         $.ajax({
@@ -73,10 +67,8 @@ const form = {
             categoryType: $('#board_category').val(),
             title: $('#board_title').val(),
             content: $('#board_content').val(),
-            address: {
-                latitude: lat,
-                longitude: lon,
-            }
+            latitude: lat,
+            longitude: lon,
         });
 
         const idx = $('#board_idx').val();

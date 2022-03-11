@@ -1,87 +1,89 @@
 package com.savannah030.ViLLAGER.controller;
 
-import com.savannah030.ViLLAGER.domain.Board;
+import com.savannah030.ViLLAGER.domain.components.Address;
+import com.savannah030.ViLLAGER.domain.entity.Board;
+//import com.savannah030.ViLLAGER.dto.BoardDto;
+import com.savannah030.ViLLAGER.dto.BoardDto;
+import com.savannah030.ViLLAGER.exception.ReturnCode;
+import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import com.savannah030.ViLLAGER.service.BoardService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.hateoas.PagedModel;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/boards")
 public class BoardRestController {
 
-    private BoardRepository boardRepository;
-
-    // 생성자로 Bean 주입받기
-    public BoardRestController(BoardRepository boardRepository){
-        this.boardRepository = boardRepository;
-    }
+    private final BoardService boardService;
+    private final BoardRepository boardRepository;
 
     // Create
+    // NOTE: @RequestBody는 JSON 형식으로 전송된 요청 데이터를 객체로 전달받음
+    //  createdDate, updateDate는 사용자가 임의로 지정하면 안되므로 서비스단에서 처리
     @PostMapping
-    public ResponseEntity<?> postBoard(@RequestBody Board board){
-        boardRepository.save(board);
+    public ResponseEntity<?> postBoard(@RequestBody BoardDto boardDto){
+        log.info("boardDto: {}", boardDto);
+        ReturnCode result = boardService.createBoard(boardDto);
+        log.info("result : {}", result);
+        if(result != ReturnCode.SUCCESS){
+            return new ResponseEntity<>("{}", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        boardService.createBoard(boardDto);
         return new ResponseEntity<>("{}", HttpStatus.CREATED);
     }
 
-    /**
-     *
-     * @param pageable
-     * @return
-     */
+    //
+    // FIXME: 임시
+    //@PostMapping
+    //public ResponseEntity<?> postBoard(@RequestBody Board board) {
+    //    boardService.createBoard(board);
+    //    return new ResponseEntity<>("{}", HttpStatus.OK);
+    //}
+    //
+
+
     // Read
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getBoards(@PageableDefault Pageable pageable){
-        Page<Board> boards = boardRepository.findAll(pageable);
+    // @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    // public ResponseEntity<?> getBoards(@PageableDefault Pageable pageable){
+    //   Page<Board> boards = boardRepository.findAll(pageable);
         /**
          * public PageMetadata(long size,
          *                     long number,
          *                     long totalElements,
          *                     long totalPages)
          */
-        PagedModel.PageMetadata pageMetadata
-                = new PagedModel.PageMetadata(pageable.getPageSize(),
-                                                boards.getNumber(),
-                                                boards.getTotalElements());
-        PagedModel<Board> models = PagedModel.of(boards.getContent(),pageMetadata);
-        models.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());
-        return ResponseEntity.ok(models);
-    }
+    //   PagedModel.PageMetadata pageMetadata
+    //            = new PagedModel.PageMetadata(pageable.getPageSize(),
+    //                                            boards.getNumber(),
+    //                                            boards.getTotalElements());
+    //    PagedModel<Board> models = PagedModel.of(boards.getContent(),pageMetadata);
+    //    models.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());
+    //    return ResponseEntity.ok(models);
+    //}
 
-    /**
-     *
-     * @param idx
-     * @param board
-     * @return
-     */
     // Update
     @PutMapping("/{idx}")
     public ResponseEntity<?> putBoard(@PathVariable("idx") Long idx, @RequestBody Board board) {
-        // here valid 체크
+        // TODO valid 체크
         Board board1 = boardRepository.getById(idx);
         board1.update(board);
         boardRepository.save(board1);
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
 
-    /**
-     *
-     * @param idx
-     * @return
-     */
     // Delete
     @DeleteMapping("/{idx}")
     public ResponseEntity<?> deleteBoard(@PathVariable("idx") Long idx){
-        // here valid 체크
         boardRepository.deleteById(idx);
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
+
 }
