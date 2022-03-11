@@ -1,6 +1,6 @@
-var main = {
+const form = {
     init : function () {
-        var _this = this;
+        const _this = this;
         $('#btn-save').on('click', function() {
             _this.save();
         });
@@ -11,38 +11,75 @@ var main = {
             _this.delete();
         });
     },
+
+    getLocation : function (){
+        let lat = 37.498095, //강남역
+            lon = 127.027610;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position){
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+        return [lat,lon];
+    },
+
     save : function () {
-        var jsonData = JSON.stringify({
-            idx: $('#board_idx').val(),
+
+        let [lat,lon] = this.getLocation();
+        console.log("currentPos",lat,lon);
+
+        const jsonData = JSON.stringify({
+            //idx: $('#board_idx').val(), // 기본 키 생성은 데이터베이스에 위임
+            categoryType: $('#board_category').val(),
             title: $('#board_title').val(),
             content: $('#board_content').val(),
-            // here 위치(latitude,longitude)는 geolocation으로 가져오기 !
+            /**
+             * NOTE: Board 엔티티에 Address를 임베디드 타입으로 선언했으므로
+             *  json도 중첩문으로 써야함
+             */
+            address: {
+                latitude: lat,
+                longitude: lon,
+            }
         });
+        console.log("jsonData: ",jsonData); //ok
         $.ajax({
                     url: "http://localhost:8080/api/boards",
                     type: "POST",
                     data: jsonData,
                     contentType: "application/json",
                     dataType: "json",
-                    success: function () {
-                    alert('저장 성공!');
-                    location.href = '/board/list';
+                        success: function () {
+                            alert('저장 성공!');
+                            location.href = '/board/list';
                     },
                     error: function () {
                         alert('저장 실패!');
+                        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                     }
                });
     },
-    // here 저장 버튼 누르고 게시글 목록으로 돌아간 다음 '뒤로 가기' 누르면 잘못된 접근입니다. 띄워줘야함
+    // TODO 저장 버튼 누르고 게시글 목록으로 돌아간 다음 '뒤로 가기' 누르면 잘못된 접근입니다. 띄워줘야함
 
     update : function () {
-        var jsonData = JSON.stringify({
+
+        let [lat,lon] = this.getLocation();
+        console.log("currentPos",lat,lon);
+
+        const jsonData = JSON.stringify({
+            categoryType: $('#board_category').val(),
             title: $('#board_title').val(),
             content: $('#board_content').val(),
-            // here 위치(latitude,longitude)는 geolocation으로 가져오기 !
+            address: {
+                latitude: lat,
+                longitude: lon,
+            }
         });
 
-        var idx = $('#board_idx').val();
+        const idx = $('#board_idx').val();
 
         $.ajax({
            url: "http://localhost:8080/api/boards/" + idx,
@@ -61,7 +98,7 @@ var main = {
     },
 
     delete : function () {
-        var idx = $('#board_idx').val();
+        const idx = $('#board_idx').val();
 
         $('#btn-delete').click(function () {
             $.ajax({
@@ -79,6 +116,6 @@ var main = {
     }
 };
 
-main.init();
+form.init();
 
 
