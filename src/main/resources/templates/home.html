@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Home Page</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div th:replace="layout/header::header"></div>
+
+<!--body-->
+<h1>Villagers !</h1>
+<th:block th:unless="${authMember}">
+    <p>환영합니다.</p>
+    <p>
+        <a href="" th:href="@{/member/sign-up}">[회원 가입하기]</a>
+        <a href="" th:href="@{/member/login}">[로그인]</a>
+    </p>
+</th:block>
+
+<th:block th:if="${authMember}">
+    <p><span th:text="{autoMember.name}">님, 환영합니다.</span></p>
+    <p>
+        <a href="" th:href="@{/member/password}">[비밀번호 변경]</a>
+        <a href="" th:href="@{/member/logout}">[로그아웃]</a>
+    </p>
+</th:block>
+<!--/body-->
+
+<div th:replace="layout/footer::footer"></div>
+</body>
+</html>
