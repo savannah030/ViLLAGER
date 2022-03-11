@@ -1,29 +1,21 @@
 package com.savannah030.ViLLAGER.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.savannah030.ViLLAGER.domain.enums.CategoryType;
 import lombok.*;
 
-import java.io.Serializable;
-
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 public class BoardDto {
 
-    //@JsonProperty(value = "categoryType")
-    private final CategoryType categoryType;
+    private CategoryType categoryType;
 
-    //@JsonProperty(value = "title")
-    private final String title;
+    private String title;
 
-    //@JsonProperty(value = "content")
-    private final String content;
+    private String content;
 
-    //@JsonProperty(value = "latitude")
-    private final Double latitude;
+    private Double latitude;
 
-    //@JsonProperty(value = "longitude")
-    private final Double longitude;
+    private Double longitude;
     
     @Builder
     public BoardDto(CategoryType categoryType, String title, String content, Double latitude, Double longitude){
