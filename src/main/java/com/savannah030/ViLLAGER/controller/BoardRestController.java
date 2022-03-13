@@ -29,25 +29,17 @@ public class BoardRestController {
     // NOTE: @RequestBody는 JSON 형식으로 전송된 요청 데이터를 객체로 전달받음
     //  createdDate, updateDate는 사용자가 임의로 지정하면 안되므로 서비스단에서 처리
     @PostMapping
-    public ResponseEntity<?> postBoard(@RequestBody BoardDto boardDto){
-        log.info("boardDto: {}", boardDto);
+    public ResponseEntity<?> postBoard(@RequestBody BoardDto boardDto) {
+
+        log.info("create boardDto: {}", boardDto);
         ReturnCode result = boardService.createBoard(boardDto);
         log.info("result : {}", result);
         if(result != ReturnCode.SUCCESS){
             return new ResponseEntity<>("{}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        boardService.createBoard(boardDto);
+        boardService.createBoard(boardDto); // 왜 글 2개 생성되나 했네..
         return new ResponseEntity<>("{}", HttpStatus.CREATED);
     }
-
-    //
-    // FIXME: 임시
-    //@PostMapping
-    //public ResponseEntity<?> postBoard(@RequestBody Board board) {
-    //    boardService.createBoard(board);
-    //    return new ResponseEntity<>("{}", HttpStatus.OK);
-    //}
-    //
 
 
     // Read
@@ -71,11 +63,14 @@ public class BoardRestController {
 
     // Update
     @PutMapping("/{idx}")
-    public ResponseEntity<?> putBoard(@PathVariable("idx") Long idx, @RequestBody Board board) {
+    public ResponseEntity<?> putBoard(@PathVariable("idx") Long idx, @RequestBody BoardDto boardDto) {
+
         // TODO valid 체크
-        Board board1 = boardRepository.getById(idx);
-        board1.update(board);
-        boardRepository.save(board1);
+        log.info("update boardDto: {}", boardDto);
+        ReturnCode result = boardService.updateBoard(idx,boardDto);
+        if (result != ReturnCode.SUCCESS){
+            return new ResponseEntity<>("{}", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
 

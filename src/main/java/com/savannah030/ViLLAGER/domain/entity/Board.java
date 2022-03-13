@@ -4,11 +4,13 @@ import com.savannah030.ViLLAGER.domain.BaseEntity;
 import com.savannah030.ViLLAGER.domain.components.Address;
 import com.savannah030.ViLLAGER.domain.enums.CategoryType;
 import com.savannah030.ViLLAGER.domain.enums.StatusType;
+import com.savannah030.ViLLAGER.dto.BoardDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -42,10 +44,10 @@ public class Board extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_idx") // NOTE: 연관관계 매핑(객체와 테이블 연결)
-    private Member ownMember; // 이 board를 작성한 사람
+    private Member seller; // 이 board를 작성한 사람
 
-    @OneToMany(mappedBy = "likeBoard")
-    private Set<Like> likeMembers = new LinkedHashSet<>(); // CONFUSED: final 붙여야되나?
+    @OneToMany(mappedBy = "wishBoard")
+    private Set<Wish> wishMembers = new LinkedHashSet<>(); // CONFUSED: final 붙여야되나?
 
     // NOTE: 생성자 상단에 선언 시 생성자에 포함된 필드만 빌더에 포함
     @Builder
@@ -56,26 +58,26 @@ public class Board extends BaseEntity {
         this.content = content;
         this.statusType = StatusType.ONSALE;    // 처음 등록한 글은 무조건 '판매중'
         this.hits = Long.valueOf("0");          // 조회수는 0으로 초기화
-        this.address = address;                 // TODO: 주소 설정 어떻게?
-
+        this.address = address;
     }
 
     // NOTE: 영속성 컨텍스트
-    public void update(Board board){ //FIXME: 함수이름 updateBoard로 고치기
-        this.categoryType = board.getCategoryType();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.statusType = board.getStatusType();
+    public void update(BoardDto boardDto){
+        this.categoryType = boardDto.getCategoryType();
+        this.title = boardDto.getTitle();
+        this.content = boardDto.getContent();
+        //this.statusType = boardDto.getStatusType(); //FIXME:
         // 조회수는 업데이트할 필요없음
-        this.address = board.getAddress(); // TODO: 주소 업데이트는 어떻게?
+        this.address = new Address(boardDto.getLatitude(), boardDto.getLongitude());
     }
 
-    public void updateHits(Board board){
+    public void increaseHits(Board board){
         this.hits += 1;
     }
 
-    public void addLikeMember(Like like){ // CONFUSED: 파라미터 Like 대신 Member쓰면 안되나?
-        this.likeMembers.add(like);
+    // FIXME: 이 함수 지우고 대신 wishRepository.save() 쓰기
+    public void addWishMember(Wish wish){ // CONFUSED: 파라미터 Wish 대신 Member쓰면 안되나?
+        this.wishMembers.add(wish);
     }
 
     // CONFUSED: update 함수 있는데 굳이 status만 바꾸는 함수들 만들어야할까?
