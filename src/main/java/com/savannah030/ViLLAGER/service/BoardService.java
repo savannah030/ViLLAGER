@@ -2,7 +2,8 @@ package com.savannah030.ViLLAGER.service;
 
 import com.savannah030.ViLLAGER.domain.components.Address;
 import com.savannah030.ViLLAGER.domain.entity.Board;
-import com.savannah030.ViLLAGER.dto.BoardDto;
+import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
+import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class BoardService {
         return boardRepository.findById(idx).orElse(new Board());
     }
 
-    public ReturnCode createBoard(BoardDto boardDto) {
+    public ReturnCode createBoard(BoardSaveRequestDto boardDto) {
         // NOTE: 빌더 패턴을 통해 '서비스단'에서 엔티티 객체 생성하고 리포지토리에 저장
         // CONFUSED: Board 엔티티 영속성?
         Long idx = boardRepository.save(Board.builder()
@@ -51,7 +52,7 @@ public class BoardService {
     }
     // NOTE: 트랜잭션 끝날 때 플러쉬 하면서 데이터 상태를 DB에 동기화
     @Transactional
-    public ReturnCode updateBoard(Long idx, BoardDto boardDto){
+    public ReturnCode updateBoard(Long idx, BoardUpdateRequestDto boardDto){
         // CONFUSED: board 엔티티 영속성?
         Optional<Board> board = boardRepository.findById(idx);
         if(!board.isPresent()){

@@ -5,7 +5,7 @@ import lombok.*;
 
 @NoArgsConstructor
 @Getter
-public class BoardDto {
+public class BoardSaveRequestDto {
 
     private CategoryType categoryType;
 
@@ -18,7 +18,7 @@ public class BoardDto {
     private Double longitude;
     
     @Builder
-    public BoardDto(CategoryType categoryType, String title, String content, Double latitude, Double longitude){
+    public BoardSaveRequestDto(CategoryType categoryType, String title, String content, Double latitude, Double longitude){
         this.categoryType = categoryType;
         this.title = title;
         this.content = content;

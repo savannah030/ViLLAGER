@@ -1,11 +1,8 @@
 package com.savannah030.ViLLAGER.controller;
 
-import com.savannah030.ViLLAGER.domain.components.Address;
-import com.savannah030.ViLLAGER.domain.entity.Board;
-//import com.savannah030.ViLLAGER.dto.BoardDto;
-import com.savannah030.ViLLAGER.dto.BoardDto;
+import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
+import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
-import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import com.savannah030.ViLLAGER.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Slf4j
 @RestController
@@ -29,7 +25,7 @@ public class BoardRestController {
     // NOTE: @RequestBody는 JSON 형식으로 전송된 요청 데이터를 객체로 전달받음
     //  createdDate, updateDate는 사용자가 임의로 지정하면 안되므로 서비스단에서 처리
     @PostMapping
-    public ResponseEntity<?> postBoard(@RequestBody BoardDto boardDto) {
+    public ResponseEntity<?> postBoard(@RequestBody BoardSaveRequestDto boardDto) {
 
         log.info("create boardDto: {}", boardDto);
         ReturnCode result = boardService.createBoard(boardDto);
@@ -37,7 +33,6 @@ public class BoardRestController {
         if(result != ReturnCode.SUCCESS){
             return new ResponseEntity<>("{}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        boardService.createBoard(boardDto); // 왜 글 2개 생성되나 했네..
         return new ResponseEntity<>("{}", HttpStatus.CREATED);
     }
 
@@ -63,11 +58,11 @@ public class BoardRestController {
 
     // Update
     @PutMapping("/{idx}")
-    public ResponseEntity<?> putBoard(@PathVariable("idx") Long idx, @RequestBody BoardDto boardDto) {
+    public ResponseEntity<?> putBoard(@PathVariable("idx") Long idx, @RequestBody BoardUpdateRequestDto boardDto) {
 
         // TODO valid 체크
         log.info("update boardDto: {}", boardDto);
-        ReturnCode result = boardService.updateBoard(idx,boardDto);
+        ReturnCode result = boardService.updateBoard(idx, boardDto);
         if (result != ReturnCode.SUCCESS){
             return new ResponseEntity<>("{}", HttpStatus.INTERNAL_SERVER_ERROR);
         }

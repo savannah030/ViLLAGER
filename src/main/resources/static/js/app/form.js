@@ -36,6 +36,7 @@ const form = {
             categoryType: $('#board_category').val(),
             title: $('#board_title').val(),
             content: $('#board_content').val(),
+            // 처음 글 올릴때는 무조건 판매중 따라서 statusType 필요없음
             latitude: lat,
             longitude: lon,
         });
@@ -67,6 +68,7 @@ const form = {
             categoryType: $('#board_category').val(),
             title: $('#board_title').val(),
             content: $('#board_content').val(),
+            statusType: $('#board_status').val(),
             latitude: lat,
             longitude: lon,
         });
