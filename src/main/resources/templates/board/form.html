@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Board Form</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}" />-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div th:replace="layout/header::header"></div>
@@ -20,19 +20,19 @@
         <!-- createdDate -->
         <tr>
             <th style="padding:13px 0 0 15px;">생성날짜</th>
-            <td><input type="text" class="col-md-1 form-control input-sm" readonly="readonly" th:value="${board?.createdDate} ? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')} : ${board?.createdDate}"/></td>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${board?.createdDate} ? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')} : ${board?.createdDate}"/></td>
         </tr>
         <!-- updatedDate -->
         <tr>
             <th style="padding:13px 0 0 15px;">수정날짜</th>
-            <td><input type="text" class="col-md-1 form-control input-sm" readonly="readonly" th:value="${board?.updatedDate} ? ${#temporals.format(board.updatedDate,'yyyy-MM-dd HH:mm')} : ${board?.updatedDate}"/></td>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${board?.updatedDate} ? ${#temporals.format(board.updatedDate,'yyyy-MM-dd HH:mm')} : ${board?.updatedDate}"/></td>
         </tr>
         <!-- categoryType -->
         <tr>
             <th style="padding:13px 0 0 15px">게시판 선택</th>
             <td>
                 <div class="pull-left">
-                    <select class="form-control input-sm" id="board_category">
+                    <select class="col-md-8 form-control input-sm" id="board_category">
                         <option>--분류--</option>
                         <option th:value="CLOTHES" th:selected="${board?.categoryType?.name() == 'CLOTHES'}">옷</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
                         <option th:value="ELECTRONICS" th:selected="${board?.categoryType?.name() == 'ELECTRONICS'}">전자기기</option>
@@ -43,19 +43,33 @@
         <!-- title -->
         <tr>
             <th style="padding:13px 0 0 15px;">제목</th>
-            <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.title}"/></td>
+            <td><input id="board_title" type="text" class="col-md-8 form-control input-sm" th:value="${board?.title}"/></td>
         </tr>
         <!-- content -->
         <tr>
             <th style="padding:13px 0 0 15px;">내용</th>
-            <td><textarea id="board_content" class="col-md-1 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
+            <td><textarea id="board_content" class="col-md-8 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
                           th:text="${board?.content}"></textarea><span class="help-block"></span>
+            </td>
+        </tr>
+        <!-- statusType -->
+        <tr>
+            <th style="padding:13px 0 0 15px">판매 상태</th> <!-- 글을 수정할때만 판매 상태 바꿀 수 있도록 -->
+            <td>
+                <div class="pull-left">
+                    <select th:disabled="!${board?.idx}" class="col-md-8 form-control input-sm" id="board_status">
+                        <option>--분류--</option>
+                        <option th:value="ONSALE" th:selected="${board?.statusType?.name() == 'ONSALE'}">판매중</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
+                        <option th:value="RESERVED" th:selected="${board?.statusType?.name() == 'RESERVED'}">예약중</option>
+                        <option th:value="SOLDOUT" th:selected="${board?.statusType?.name() == 'SOLDOUT'}">판매완료</option>
+                    </select>
+                </div>
             </td>
         </tr>
 
     </table>
     <div class="pull-left">
-        <a href="list.html" class="btn btn-default">목록으로</a>
+        <a href="/board/list" class="btn btn-default">목록으로</a>
     </div>
     <div class="pull-right">
         <button th:if="!${board?.idx}" type="button" class="btn btn-primary" id="btn-save">저장</button>
@@ -65,9 +79,8 @@
 </div>
 
 <div th:replace="layout/footer::footer"></div>
-
-<script th:src="@{/js/jquery.min.js}"></script>
-<script src="/js/app/form.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/app/form.js"></script><!-- jQuery 라이브러리보다 뒤에 써야함 -->
 </body>
 </html>

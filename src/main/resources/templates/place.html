@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Place Page</title>
+    <!--<link rel="stylesheet" th:href="@{/css/base.css}" />-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div th:replace="layout/header::header"></div>
+
+    <!--body-->
+    <button type="button" class="btn btn-primary" id="btn_findNearPlaces">장소불러오기</button>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f63a467df66083374b05cd46e6144a23"></script>
+    <script src="../static/js/app/place.js"></script>
+    <!--/body-->
+
+    <div th:replace="layout/footer::footer"></div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
