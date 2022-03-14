@@ -4,13 +4,12 @@ import com.savannah030.ViLLAGER.domain.BaseEntity;
 import com.savannah030.ViLLAGER.domain.components.Address;
 import com.savannah030.ViLLAGER.domain.enums.CategoryType;
 import com.savannah030.ViLLAGER.domain.enums.StatusType;
-import com.savannah030.ViLLAGER.dto.BoardDto;
+import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -62,7 +61,7 @@ public class Board extends BaseEntity {
     }
 
     // NOTE: 영속성 컨텍스트
-    public void update(BoardDto boardDto){
+    public void update(BoardUpdateRequestDto boardDto){
         this.categoryType = boardDto.getCategoryType();
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
@@ -71,7 +70,7 @@ public class Board extends BaseEntity {
         this.address = new Address(boardDto.getLatitude(), boardDto.getLongitude());
     }
 
-    public void increaseHits(Board board){
+    public void increaseHits(){
         this.hits += 1;
     }
 

@@ -14,18 +14,17 @@
         <h1>게시글 등록</h1>
     </div>
     <br/>
-    <input id="board_idx" type="hidden" th:value="${board?.idx}"/>
-    <input id="board_create_date" type="hidden" th:value="${board?.createdDate}"/>
+    <input id="board_idx" type="hidden" th:value="${boardResponseDto?.idx}"/>
     <table class="table">
         <!-- createdDate -->
         <tr>
             <th style="padding:13px 0 0 15px;">생성날짜</th>
-            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${board?.createdDate} ? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')} : ${board?.createdDate}"/></td>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.createdDate} ? ${#temporals.format(boardResponseDto.createdDate,'yyyy-MM-dd HH:mm')} : ${boardResponseDto?.createdDate}"/></td>
         </tr>
         <!-- updatedDate -->
         <tr>
             <th style="padding:13px 0 0 15px;">수정날짜</th>
-            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${board?.updatedDate} ? ${#temporals.format(board.updatedDate,'yyyy-MM-dd HH:mm')} : ${board?.updatedDate}"/></td>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.updatedDate} ? ${#temporals.format(boardResponseDto.updatedDate,'yyyy-MM-dd HH:mm')} : ${boardResponseDto?.updatedDate}"/></td>
         </tr>
         <!-- categoryType -->
         <tr>
@@ -34,8 +33,8 @@
                 <div class="pull-left">
                     <select class="col-md-8 form-control input-sm" id="board_category">
                         <option>--분류--</option>
-                        <option th:value="CLOTHES" th:selected="${board?.categoryType?.name() == 'CLOTHES'}">옷</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
-                        <option th:value="ELECTRONICS" th:selected="${board?.categoryType?.name() == 'ELECTRONICS'}">전자기기</option>
+                        <option th:value="CLOTHES" th:selected="${boardResponseDto?.categoryType?.name() == 'CLOTHES'}">옷</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
+                        <option th:value="ELECTRONICS" th:selected="${boardResponseDto?.categoryType?.name() == 'ELECTRONICS'}">전자기기</option>
                     </select>
                 </div>
             </td>
@@ -43,13 +42,13 @@
         <!-- title -->
         <tr>
             <th style="padding:13px 0 0 15px;">제목</th>
-            <td><input id="board_title" type="text" class="col-md-8 form-control input-sm" th:value="${board?.title}"/></td>
+            <td><input id="board_title" type="text" class="col-md-8 form-control input-sm" th:value="${boardResponseDto?.title}"/></td>
         </tr>
         <!-- content -->
         <tr>
             <th style="padding:13px 0 0 15px;">내용</th>
             <td><textarea id="board_content" class="col-md-8 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
-                          th:text="${board?.content}"></textarea><span class="help-block"></span>
+                          th:text="${boardResponseDto?.content}"></textarea><span class="help-block"></span>
             </td>
         </tr>
         <!-- statusType -->
@@ -57,24 +56,28 @@
             <th style="padding:13px 0 0 15px">판매 상태</th> <!-- 글을 수정할때만 판매 상태 바꿀 수 있도록 -->
             <td>
                 <div class="pull-left">
-                    <select th:disabled="!${board?.idx}" class="col-md-8 form-control input-sm" id="board_status">
+                    <select th:disabled="!${boardResponseDto?.idx}" class="col-md-8 form-control input-sm" id="board_status">
                         <option>--분류--</option>
-                        <option th:value="ONSALE" th:selected="${board?.statusType?.name() == 'ONSALE'}">판매중</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
-                        <option th:value="RESERVED" th:selected="${board?.statusType?.name() == 'RESERVED'}">예약중</option>
-                        <option th:value="SOLDOUT" th:selected="${board?.statusType?.name() == 'SOLDOUT'}">판매완료</option>
+                        <option th:value="ONSALE" th:selected="${boardResponseDto?.statusType?.name() == 'ONSALE'}">판매중</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
+                        <option th:value="RESERVED" th:selected="${boardResponseDto?.statusType?.name() == 'RESERVED'}">예약중</option>
+                        <option th:value="SOLDOUT" th:selected="${boardResponseDto?.statusType?.name() == 'SOLDOUT'}">판매완료</option>
                     </select>
                 </div>
             </td>
         </tr>
-
+        <!-- hits -->
+        <tr>
+            <th style="padding:13px 0 0 15px;">조회수</th>
+            <td> <input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.hits}"/> </td>
+        </tr>
     </table>
     <div class="pull-left">
         <a href="/board/list" class="btn btn-default">목록으로</a>
     </div>
     <div class="pull-right">
-        <button th:if="!${board?.idx}" type="button" class="btn btn-primary" id="btn-save">저장</button>
-        <button th:if="${board?.idx}" type="button" class="btn btn-info" id="btn-update">수정</button>
-        <button th:if="${board?.idx}" type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+        <button th:if="!${boardResponseDto?.idx}" type="button" class="btn btn-primary" id="btn-save">저장</button>
+        <button th:if="${boardResponseDto?.idx}" type="button" class="btn btn-info" id="btn-update">수정</button>
+        <button th:if="${boardResponseDto?.idx}" type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>
 
