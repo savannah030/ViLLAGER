@@ -10,15 +10,15 @@
     <div th:replace="layout/header::header"></div>
 
     <!--body-->
-    <button type="button" class="btn btn-primary" id="btn_findNearPlaces">장소불러오기</button>
-    <div id="map" style="width:500px;height:400px;"></div>
+    <button type="button" class="btn btn-primary" id="btn-findNearPlaces">근처 판매글 불러오기</button>
+    <div id="map" style="width:1000px;height:800px;"></div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f63a467df66083374b05cd46e6144a23"></script>
     <script type="text/javascript" src="js/kakao-map/createMap.js"></script>
-    <script src="js/app/place.js"></script>
     <!--/body-->
 
     <div th:replace="layout/footer::footer"></div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/app/place.js"></script>
 </body>
 </html>
