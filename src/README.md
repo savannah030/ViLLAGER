@@ -1,1 +1,0 @@
-[예외처리](https://github.com/savannah030/ViLLAGER/pull/6)
