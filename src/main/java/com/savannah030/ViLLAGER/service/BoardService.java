@@ -41,38 +41,9 @@ public class BoardService {
         //  엔티티 없으면 일단 새로운 DTO를 반환하기
         //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
         Optional<Board> entity = boardRepository.findById(idx);
-        /**
-         * // 엔티티 객체 없으면
-         *  if (!entity.isPresent()){
-         *      return new MyBoardResponseDto();
-         *      }
-         *  // 엔티티 객체 있으면
-         *  else{
-         *      return new MyBoardResponseDto(entity.get());
-         *  }
-         */
         return entity.map(MyBoardResponseDto::new).orElseGet(MyBoardResponseDto::new);
-
-         /**
-          * 시도1: 해당 idx를 갖는 엔티티를 찾고 없으면 새로운 엔티티를 생성
-          * 그 다음에 dto로 반환
-          * -> 문제점: new Board()에서 엔티티가 제대로 초기화되지 않아서 NULLPOINTERXCEPTION 발생
-        log.info("BoardService findMyBoardByIdx");
-        Board entity = boardRepository.findById(idx).orElse(new Board());
-        log.info("entity: {}",entity);
-        log.info("idx: {}" ,entity.getIdx());
-        // DTO로 변환해서 반환
-        return new MyBoardResponseDto(entity);
-         */
-        //
-
     }
 
-    /**
-     *
-     * @param pageable
-     * @return
-     */
     // READ LIST
     public Page<Board> findBoardList(Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber()-1, pageable.getPageSize());
