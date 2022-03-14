@@ -1,5 +1,7 @@
 package com.savannah030.ViLLAGER.dto;
 
+import com.savannah030.ViLLAGER.domain.components.Address;
+import com.savannah030.ViLLAGER.domain.entity.Board;
 import com.savannah030.ViLLAGER.domain.enums.CategoryType;
 import lombok.*;
 
@@ -24,5 +26,14 @@ public class BoardSaveRequestDto {
         this.content = content;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Board toEntity() {
+        return Board.builder()
+                .categoryType(categoryType)
+                .title(title)
+                .content(content)
+                .address(new Address(latitude,longitude))
+                .build();
     }
 }
