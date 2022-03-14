@@ -34,13 +34,6 @@ public class BoardService {
         return ReturnCode.SUCCESS;
     }
 
-    @Transactional
-    public void increaseHits(Board board){
-        log.info("BoardService increaseHits @Transactional");
-        log.info("increaseHits 전: {}, {}", board.getIdx(), board.getHits());
-        board.increaseHits();
-        log.info("increaseHits 후: {}, {}", board.getIdx(), board.getHits());
-    }
     // READ
     // TODO: 다른사람의 게시글 찾는 것도 구현해야함
     @Transactional
@@ -50,13 +43,14 @@ public class BoardService {
         //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
         Optional<Board> entity = boardRepository.findById(idx);
         // 엔티티 있으면
-        /** if(entity.isPresent()){
-         *      increaseHits(entity.get());
-         *  }
-         */
         log.info("BoardService findMyBoardByIdx");
         log.info("findMyBoardByIdx 전: {}, {}", entity.get().getIdx(), entity.get().getHits());
-        entity.ifPresent(this::increaseHits);
+        /**
+         * if (entity.isPresent()){
+         *      entity.get().increaseHits();
+         * }
+         */
+        entity.ifPresent(Board::increaseHits);
         log.info("findMyBoardByIdx 후: {}, {}", entity.get().getIdx(), entity.get().getHits());
         return entity.map(MyBoardResponseDto::new).orElseGet(MyBoardResponseDto::new);
     }

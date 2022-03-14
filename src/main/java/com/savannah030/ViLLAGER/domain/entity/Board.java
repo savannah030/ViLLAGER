@@ -70,7 +70,7 @@ public class Board extends BaseEntity {
         this.address = new Address(boardDto.getLatitude(), boardDto.getLongitude());
     }
 
-    public void increaseHits(Board board){
+    public void increaseHits(){
         this.hits += 1;
     }
 
