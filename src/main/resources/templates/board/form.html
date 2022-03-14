@@ -19,12 +19,12 @@
         <!-- createdDate -->
         <tr>
             <th style="padding:13px 0 0 15px;">생성날짜</th>
-            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.createdDate} ? ${#temporals.format(boardResponseDto.createdDate,'yyyy-MM-dd HH:mm')} : ${board?.createdDate}"/></td>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.createdDate} ? ${#temporals.format(boardResponseDto.createdDate,'yyyy-MM-dd HH:mm')} : ${boardResponseDto?.createdDate}"/></td>
         </tr>
         <!-- updatedDate -->
         <tr>
             <th style="padding:13px 0 0 15px;">수정날짜</th>
-            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.updatedDate} ? ${#temporals.format(boardResponseDto.updatedDate,'yyyy-MM-dd HH:mm')} : ${board?.updatedDate}"/></td>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.updatedDate} ? ${#temporals.format(boardResponseDto.updatedDate,'yyyy-MM-dd HH:mm')} : ${boardResponseDto?.updatedDate}"/></td>
         </tr>
         <!-- categoryType -->
         <tr>
@@ -65,7 +65,11 @@
                 </div>
             </td>
         </tr>
-
+        <!-- hits -->
+        <tr>
+            <th style="padding:13px 0 0 15px;">조회수</th>
+            <td> <input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.hits}"/> </td>
+        </tr>
     </table>
     <div class="pull-left">
         <a href="/board/list" class="btn btn-default">목록으로</a>

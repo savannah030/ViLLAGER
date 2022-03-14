@@ -1,8 +1,11 @@
 package com.savannah030.ViLLAGER.controller;
 
 import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
+import com.savannah030.ViLLAGER.repository.BoardRepository;
 import com.savannah030.ViLLAGER.service.BoardService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +27,10 @@ public class BoardController {
 
     @GetMapping("/form")
     public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
-        log.info("BoardController form");
-        MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx);
+        MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx); // 조회수 증가
         model.addAttribute("boardResponseDto", dto);
-        log.info("boardResponseDto: {}", dto);
+        log.info("BoardController");
+        log.info("dto에 조회수 증가 적용되는지: {}, {}", dto.getIdx(), dto.getHits()); //ok
         return "/board/form";
     }
 
