@@ -1,6 +1,8 @@
 package com.savannah030.ViLLAGER.controller;
 
+import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.service.BoardService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Slf4j
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -19,17 +22,13 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-
-    @GetMapping("/form-save")
-    public String formSave() {
-        return "/board/form-save";
-    }
-
-
-    @GetMapping("/form-update")
-    public String formUpdate(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
-        model.addAttribute("board", boardService.findBoardByIdx(idx));
-        return "/board/form-update";
+    @GetMapping("/form")
+    public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
+        log.info("BoardController form");
+        MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx);
+        model.addAttribute("boardResponseDto", dto);
+        log.info("boardResponseDto: {}", dto);
+        return "/board/form";
     }
 
     @GetMapping("/list")
