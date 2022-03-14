@@ -1,20 +1,24 @@
 package com.savannah030.ViLLAGER.service;
 
 import com.savannah030.ViLLAGER.domain.entity.Board;
+import com.savannah030.ViLLAGER.dto.BoardListResponseDto;
 import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
+import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,24 +45,27 @@ public class BoardService {
         // NOTE: 엔티티 객체 찾아서 있으면 그 엔티티를 DTO로 변환해서 반환
         //  엔티티 없으면 일단 새로운 DTO를 반환하기
         //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
-        Optional<Board> entity = boardRepository.findById(idx);
+        Optional<Board> entity = Optional.ofNullable(boardRepository.findById(idx)
+                .orElseThrow(() -> new VillagerException(ReturnCode.BOARD_NOT_EXIST)));
         // 엔티티 있으면
-        log.info("BoardService findMyBoardByIdx");
-        log.info("findMyBoardByIdx 전: {}, {}", entity.get().getIdx(), entity.get().getHits());
+        //log.info("BoardService");
+        //log.info("findMyBoardByIdx() 전: {}, {}", entity.get().getIdx(), entity.get().getHits());
         /**
          * if (entity.isPresent()){
          *      entity.get().increaseHits();
          * }
          */
         entity.ifPresent(Board::increaseHits);
-        log.info("findMyBoardByIdx 후: {}, {}", entity.get().getIdx(), entity.get().getHits());
+        //log.info("findMyBoardByIdx() 후: {}, {}", entity.get().getIdx(), entity.get().getHits());
         return entity.map(MyBoardResponseDto::new).orElseGet(MyBoardResponseDto::new);
     }
 
     // READ LIST
-    public Page<Board> findBoardList(Pageable pageable) {
+    public Page<BoardListResponseDto> findBoardList(Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber()-1, pageable.getPageSize());
-        return boardRepository.findAll(pageable);
+        Page<Board> boardList = boardRepository.findAll(pageable);
+        // NOTE: 자바 stream 공부하기!!
+        return new PageImpl<>(boardList.stream().map(BoardListResponseDto::new).collect(Collectors.toList()), pageable,boardList.getTotalElements());
     }
 
     // UPDATE
