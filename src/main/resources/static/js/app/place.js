@@ -28,6 +28,9 @@ const place = {
                 dataType: 'text',
                 success: function (data) {
                     alert('현재 위치 수집 성공!');
+                    //console.log(data); //ok
+                    createPlaceObjects(data);
+
                 },
                 error: function (data) {
                     alert('현재 위치 수집 실패!');
