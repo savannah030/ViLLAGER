@@ -3,7 +3,6 @@ package com.savannah030.ViLLAGER.service;
 import com.savannah030.ViLLAGER.domain.components.Address;
 import com.savannah030.ViLLAGER.domain.entity.Board;
 import com.savannah030.ViLLAGER.dto.MarkerResponseDto;
-import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.dto.OverlayResponseDto;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +23,9 @@ public class PlaceService {
     public List<List<?>> findNearPlaces(Address address){
         List<List<?>> results = new ArrayList<>();
         List<Board> boardList = boardRepository.findAllByLatitudeAndLongitude(address.getLatitude(), address.getLongitude());
-        List<MarkerResponseDto> markerList = boardList.stream().map(MarkerResponseDto::new).collect(Collectors.toList());
+        //List<MarkerResponseDto> markerList = boardList.stream().map(MarkerResponseDto::new).collect(Collectors.toList());
         List<OverlayResponseDto> overlayList = boardList.stream().map(OverlayResponseDto::new).collect(Collectors.toList());
-        results.add(markerList);
+        //results.add(markerList);
         results.add(overlayList);
         return results;
     }
