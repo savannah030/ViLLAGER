@@ -7,8 +7,9 @@ function createCustomOverlay(location, idx, category, title, content){
 
     result = createContent(idx, category, title, content);
     //console.log("result",result); //ok
+    console.log("location in createCustomOverlay",location);
     return new kakao.maps.CustomOverlay({
-        location: location,
+        position: location,
         content: result, // DOM 객체 생성
         //xAnchor: 0.3,
         yAnchor: 1.1

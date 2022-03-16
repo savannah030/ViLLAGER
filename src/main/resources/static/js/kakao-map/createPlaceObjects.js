@@ -12,10 +12,10 @@ function createMarkerImage(src, size) {
 }
 
 // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-function createMarker(position, image) {
+function createMarker(location, image) {
 
     return new kakao.maps.Marker({
-        position: position,
+        position: location,
         image: image
     });
 }
