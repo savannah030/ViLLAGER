@@ -1,5 +1,6 @@
 package com.savannah030.ViLLAGER.config.auth;
 
+import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -39,6 +40,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeKey = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); //2.
         OAuthAttributesDto attributes = OAuthAttributesDto.of(registrationId, userNameAttributeKey, oAuth2User.getAttributes()); //3.
 
+        // 속성값 가지고 Member 엔티티 업데이트
+        Member member = saveOrUpdate(attributes);
+
         return null;
+    }
+
+    private Member saveOrUpdate(OAuthAttributesDto attributes){
+        Member member = memberRepository.findByEmail(attributes.getEmail())
+                // 이미 가입한 사용자이면(해당 이메일을 쓰는 사용자가 있으면) 엔티티 업데이트
+                .map(entity -> entity.update(attributes.getMemberName(), attributes.getPicture()))
+                // 그렇지 않으면 속성값으로 새로운 엔티티 생성
+                .orElse(attributes.toEntity());
+
+        return memberRepository.save(member);
+
     }
 }
