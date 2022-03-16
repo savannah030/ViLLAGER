@@ -3,14 +3,17 @@ package com.savannah030.ViLLAGER.config.auth;
 import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collections;
 
 // NOTE: OAuth2UserService를 구현한 CustomOAuth2UserService 클래스는
 //  구글 로그인 이후 가져온 사용자의 정보(이름, email주소, 사진)들을 기반으로
@@ -38,12 +41,23 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
          */
         String registrationId = userRequest.getClientRegistration().getRegistrationId(); // 1.
         String userNameAttributeKey = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); //2.
+        // NOTE: OAuth2User에서 반환하는 사용자 정보는 Map이기 때문에 값 하나하나를 변환해야함
         OAuthAttributesDto attributes = OAuthAttributesDto.of(registrationId, userNameAttributeKey, oAuth2User.getAttributes()); //3.
 
         // 속성값 가지고 Member 엔티티 업데이트
         Member member = saveOrUpdate(attributes);
 
-        return null;
+        // SessionMemberDto : 세션에 사용자 정보 저장할 dto 클래스
+        httpSession.setAttribute("member", new SessionMemberDto(member));
+
+        // CONFUSED
+        //  싱글톤으로 저장하는 이유?
+        //  getRoleKey는 어디서 온거지?
+        return new DefaultOAuth2User(
+                Collections.singleton(
+                        new SimpleGrantedAuthority(member.getRoleType().getKey())),
+                attributes.getAttributes(),
+                attributes.getNameAttributeKey());
     }
 
     private Member saveOrUpdate(OAuthAttributesDto attributes){
