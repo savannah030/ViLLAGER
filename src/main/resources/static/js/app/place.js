@@ -21,6 +21,8 @@ const place = {
             let lat = position.coords.latitude,
                 lon = position.coords.longitude;
 
+            console.log("현재위치:",lat,",",lon);
+
             $.ajax({
                 url : "http://localhost:8080/api/places",
                 type : "GET",
@@ -29,7 +31,15 @@ const place = {
                 success: function (data) {
                     alert('현재 위치 수집 성공!');
                     //console.log(data); //ok
-                    createPlaceObjects(data);
+                    let places = createPlaceObjects(data);//customOverlay;
+                    places.forEach((place) => {
+                        let marker = place.marker;
+                        let customOverlay = place.customOverlay;
+                        console.log("marker",marker); //ok
+                        console.log("customOverlay",customOverlay); //ok
+                        marker.setMap(map);
+                        customOverlay.setMap(map);
+                    });
 
                 },
                 error: function (data) {
