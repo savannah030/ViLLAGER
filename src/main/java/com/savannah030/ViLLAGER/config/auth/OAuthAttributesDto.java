@@ -43,4 +43,14 @@ public class OAuthAttributesDto {
                             .picture( (String) attributes.get("picture"))
                             .build();
     }
+
+    // 해당 이메일로 가입되지 않은 경우 Member 엔티티 새로 생성
+    public Member toEntity(){
+        return Member.builder()
+                .memberName(memberName)
+                .email(email)
+                .roleType(RoleType.GUEST)
+                .picture(picture)
+                .build();
+    }
 }
