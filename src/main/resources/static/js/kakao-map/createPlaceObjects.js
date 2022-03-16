@@ -27,14 +27,10 @@ function createPlaceObjects(jsonData) {
     var places = [];
 
     const jsonParse = JSON.parse(jsonData);
-    // jsonParse.forEach((json.forEach( (data => console.log(data)))) ); //ok
-
 
     jsonParse.forEach( (json) => {
-        // console.log("json"); //ok
-        json.forEach((data) => {  // jsonParse.forEach((data) => {
 
-            // console.log(data, typeof (data)); //ok // {idx: 191, categoryType: 'ELECTRONICS', title: '게시글191', latitude: 37.4965883, longitude: 126.9939492} 'object'
+        json.forEach((data) => {
 
             const idx = data.idx; //ok
             const category = data.categoryType; //ok
@@ -43,17 +39,8 @@ function createPlaceObjects(jsonData) {
             const latitude = data.latitude; //ok
             const longitude = data.longitude; //ok
 
-
-            // console.log(idx); //ok
-            // console.log(category); //ok
-            // console.log(title); //ok
-            // console.log("content",content); //ok
-            // console.log(latitude,"json type:",typeof(latitude),37.4965883, typeof(37.4965883)); //ok 타입은 같은데..
-            // console.log(longitude); //ok
-
             const location = new kakao.maps.LatLng(latitude,longitude);
-            console.log("idx",idx,"location",location);
-            // '<i className="fa-solid fa-clothes-hanger"></i>'
+
             //const markerImage = createMarkerImage("src", new kakao.maps.Size(30,30)); //FIXME
 
             //marker = createMarker(location, markerImage);
@@ -66,49 +53,13 @@ function createPlaceObjects(jsonData) {
         });
     });
 
-
-
-    /*
-    const jsonMarkers = jsonParse[0]; //ok
-    const jsonOverlays = jsonParse[1]; //ok
-    console.log(markers); //ok
-    console.log(overlays); //ok
-
-    jsonMarkers.forEach((jsonMarker) => {
-
-        const location = new kakao.maps.LatㅜLng(jsonMarker[latitude], jsonMarker[longitude]);
-        const markerImage = createMarkerImage(<i className="fa-solid fa-clothes-hanger"></i>, new kakao.maps.Size(30,30));
-
-        const marker = createMarker(location, markerImage);
-
-        kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map,marker,i,customOverlay));
-        kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(customOverlay));
-
-    });
-
-    jsonOverlays.forEach((jsonOverlay) => {
-        const location = new kakao.maps.LatLng(jsonOverlay[latitude], jsonOverlay[longitude]);
-        const customOverlay = createCustomOverlay(position ,jsonOverlay[categoryType],i);
-    });
-     */
-
-    /*
-    getContent().addEventListener('mouseover', makeOverListener(map,marker,i,customOverlay));
-    getContent().addEventListener('mouseout', makeOutListener(customOverlay));
-
-    const place = new NewPlace(marker, customOverlay);
-    places.push(place);
-
-    */
     return places;
 
 }
 
 
-
 var activeId = null;
 var timeoutId = null;
-
 
 //커스텀오버레이를 표시하는 클로저를 만드는 함수입니다
 function makeOverListener(map,marker,customOverlay) {
