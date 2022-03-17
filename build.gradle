@@ -21,20 +21,33 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	//implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'junit:junit:4.13.1'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 	//implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation "org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE"
+	//implementation 'org.springframework.boot:spring-boot-starter-jdbc' //h2
+	implementation('org.hibernate.validator:hibernate-validator')
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	//implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client") // 1.5 방식은 못씀 // 스프링 "부트 스타터" 로 설정해야함
+	// spring-security-oauth2-client와 spring-security-oauth2-jose를 기본으로 관리해줌
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	//runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
-	implementation "org.mariadb.jdbc:mariadb-java-client"
+	runtimeOnly 'mysql:mysql-connector-java:8.0.25'
+	//implementation "org.mariadb.jdbc:mariadb-java-client"
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//testImplementation 'junit:junit:4.13.1'  /////////////
+	//testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//testImplementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 test {

@@ -11,21 +11,33 @@
 
 <!--body-->
 <h1>Villagers !</h1>
-<th:block th:unless="${authMember}">
+<th:block th:if="!${member}">
     <p>환영합니다.</p>
     <p>
-        <a href="" th:href="@{/member/sign-up}">[회원 가입하기]</a>
-        <a href="" th:href="@{/member/login}">[로그인]</a>
+        <!--<a href="" th:href="@{/member/sign-up}">[회원 가입하기]</a>-->
+        <!--<a href="" th:href="@{/member/login}">[로그인]</a>-->
+        <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+        <!-- 스프링 시큐리티에서 기본적으로 제공하는 로그인 URL 이므로 별도의 컨트롤러 생성할 필요없음-->
     </p>
 </th:block>
-
+<!-- 소셜 로그인 -->
+<th:block th:if="${member}">
+    <p><span th:text="${member.memberName}">님, 환영합니다.</span></p>
+    <p><span th:text="${member.email}"></span></p>
+    <p><span th:text="${member.picture}"></span></p>
+    <p>
+        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+    </p>
+</th:block>
+<!--
 <th:block th:if="${authMember}">
-    <p><span th:text="{autoMember.name}">님, 환영합니다.</span></p>
+    <p><span th:text="{authMember.name}">님, 환영합니다.</span></p>
     <p>
         <a href="" th:href="@{/member/password}">[비밀번호 변경]</a>
         <a href="" th:href="@{/member/logout}">[로그아웃]</a>
     </p>
 </th:block>
+-->
 <!--/body-->
 
 <div th:replace="layout/footer::footer"></div>
