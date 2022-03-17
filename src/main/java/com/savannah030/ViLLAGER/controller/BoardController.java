@@ -30,8 +30,6 @@ public class BoardController {
     public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
         MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx); // 조회수 증가
         model.addAttribute("boardResponseDto", dto);
-        log.info("BoardController");
-        log.info("dto에 조회수 증가 적용되는지: {}, {}", dto.getIdx(), dto.getHits()); //ok
         return "/board/form";
     }
 
@@ -45,7 +43,7 @@ public class BoardController {
         if (member != null){
             model.addAttribute("member",member);
         }
-        model.addAttribute("boardList",boardService.findBoardList(pageable));
+        model.addAttribute("boardList",boardService.findBoardList(pageable)); //  Page<BoardListResponseDto>
         return "/board/list";
     }
 }

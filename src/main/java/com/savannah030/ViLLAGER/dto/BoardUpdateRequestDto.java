@@ -16,7 +16,7 @@ public class BoardUpdateRequestDto {
 
     private String content;
 
-    private StatusType statusType;
+    private StatusType statusType; // 판매상태는 글 수정시에만 바꿀 수 있음
 
     private Double latitude;
 

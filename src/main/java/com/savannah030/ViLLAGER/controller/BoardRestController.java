@@ -1,5 +1,6 @@
 package com.savannah030.ViLLAGER.controller;
 
+import com.savannah030.ViLLAGER.config.auth.SessionMemberDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 
 @Slf4j
 @RestController
@@ -20,16 +23,16 @@ public class BoardRestController {
 
     private final BoardService boardService;
     private final BoardRepository boardRepository;
+    private final HttpSession httpSession;
 
     // Create
     // NOTE: @RequestBody는 JSON 형식으로 전송된 요청 데이터를 객체로 전달받음
     //  createdDate, updateDate는 사용자가 임의로 지정하면 안되므로 서비스단에서 처리
     @PostMapping
     public ResponseEntity<?> postBoard(@RequestBody BoardSaveRequestDto boardDto) {
+        SessionMemberDto sessionMember = (SessionMemberDto) httpSession.getAttribute("member");
+        ReturnCode result = boardService.createBoard(boardDto, sessionMember);
 
-        log.info("create boardDto: {}", boardDto);
-        ReturnCode result = boardService.createBoard(boardDto);
-        log.info("result : {}", result);
         if(result != ReturnCode.SUCCESS){
             return new ResponseEntity<>("{}", HttpStatus.INTERNAL_SERVER_ERROR);
         }

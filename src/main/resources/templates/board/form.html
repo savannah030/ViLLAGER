@@ -26,6 +26,11 @@
             <th style="padding:13px 0 0 15px;">수정날짜</th>
             <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.updatedDate} ? ${#temporals.format(boardResponseDto.updatedDate,'yyyy-MM-dd HH:mm')} : ${boardResponseDto?.updatedDate}"/></td>
         </tr>
+        <!-- 판매자 이름 -->
+        <tr>
+            <th style="padding:13px 0 0 15px;">작성자</th>
+            <td><input type="text" class="col-md-8 form-control input-sm" readonly="readonly" th:value="${boardResponseDto?.seller?.getMemberName()}"/></td>
+        </tr>
         <!-- categoryType -->
         <tr>
             <th style="padding:13px 0 0 15px">게시판 선택</th>
@@ -33,7 +38,7 @@
                 <div class="pull-left">
                     <select class="col-md-8 form-control input-sm" id="board_category">
                         <option>--분류--</option>
-                        <option th:value="CLOTHES" th:selected="${boardResponseDto?.categoryType?.name() == 'CLOTHES'}">옷</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
+                        <option th:value="CLOTHES" th:selected="${boardResponseDto?.categoryType?.name() == 'CLOTHES'}">옷</option> <!-- th:value도 대문자로 써야 json 파싱에러 안남 -->
                         <option th:value="ELECTRONICS" th:selected="${boardResponseDto?.categoryType?.name() == 'ELECTRONICS'}">전자기기</option>
                     </select>
                 </div>

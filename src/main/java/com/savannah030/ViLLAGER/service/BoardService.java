@@ -1,6 +1,8 @@
 package com.savannah030.ViLLAGER.service;
 
+import com.savannah030.ViLLAGER.config.auth.SessionMemberDto;
 import com.savannah030.ViLLAGER.domain.entity.Board;
+import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.dto.BoardListResponseDto;
 import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
@@ -8,6 +10,7 @@ import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
 import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
+import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,11 +28,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     // CREATE
-    public ReturnCode createBoard(BoardSaveRequestDto boardSaveRequestDto) {
-        Long idx = boardRepository.save(boardSaveRequestDto.toEntity()).getIdx();
-        Optional<Board> findBoard = boardRepository.findById(idx); // 글이 생성됐는지 확인
+    /**
+     * 1. 세션에 있는 사용자의 정보로 사용자 찾기
+     * 2. 사용자가 존재하지 않으면 오류 리턴
+     * 3. 글을 저장하고 인덱스 리턴(이 때 사용자의 정보도 같이 저장)
+     * 4. 글이 생성됐는지 확인
+     */
+    public ReturnCode createBoard(BoardSaveRequestDto boardSaveRequestDto, SessionMemberDto sessionMember) {
+
+        Optional<Member> member = memberRepository.findByEmail(sessionMember.getEmail()); // 1.
+        if(!member.isPresent()){ // 2.
+            return ReturnCode.MEMBER_NOT_EXIST;
+        }
+
+        Long idx = boardRepository.save(boardSaveRequestDto.toEntity(member.get())).getIdx(); //3.
+        Optional<Board> findBoard = boardRepository.findById(idx); // 4.
         if(!findBoard.isPresent()){
             return ReturnCode.FAIL_TO_CREATE_BOARD;
         }
@@ -70,9 +86,7 @@ public class BoardService {
         else {
             // NOTE: Optional 클래스의 ifPresent 메서드는 값이 존재하면 지정된 Consumer를 실행하고, 값이 없으면 아무 일도 일어나지 않음
             //  Consumer란 함수형 인터페이스의 한 종류로, T 형식의 객체를 인수로 받아서 동작 수행
-            board.ifPresent(board1 -> {
-                board1.update(boardDto);
-            });
+            board.ifPresent(board1 -> board1.update(boardDto));
             return ReturnCode.SUCCESS;
         }
     }
