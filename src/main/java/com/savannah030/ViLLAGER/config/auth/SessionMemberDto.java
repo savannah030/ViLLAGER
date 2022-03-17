@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.io.Serializable;
 
 @Getter
-// NOTE: 직렬화
+// NOTE: 인증된 사용자의 정보만 담는 dto(직렬화)
 public class SessionMemberDto implements Serializable {
     private String memberName;
     private String email;
