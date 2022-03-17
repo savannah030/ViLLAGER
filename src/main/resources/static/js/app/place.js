@@ -35,10 +35,10 @@ const place = {
                     places.forEach((place) => {
                         let marker = place.marker;
                         let customOverlay = place.customOverlay;
-                        console.log("marker",marker); //ok
+                        console.log("marker",marker) ; //ok
                         console.log("customOverlay",customOverlay); //ok
                         marker.setMap(map);
-                        customOverlay.setMap(map);
+                        customOverlay.setMap(null);
                     });
 
                 },

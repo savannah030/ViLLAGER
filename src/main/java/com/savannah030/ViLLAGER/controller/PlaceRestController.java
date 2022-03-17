@@ -23,8 +23,7 @@ public class PlaceRestController {
         log.info("lat: {}, lon: {}",latitude,longitude); // ok
         return Optional.ofNullable(placeService.findNearPlaces(new Address(latitude,longitude)))
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
-
+                .orElse(ResponseEntity.noContent().build()); //ok
     }
 
 

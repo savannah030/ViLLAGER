@@ -29,9 +29,7 @@ public class MyBoardResponseDto {
 
     private Long hits;
 
-    private Double latitude;
-
-    private Double longitude;
+    // 주소는 글 저장버튼 누를 때 자바스크립트 코드에서 갖고 옴
 
     @Builder
     public MyBoardResponseDto(Board entity){
@@ -43,7 +41,5 @@ public class MyBoardResponseDto {
         this.content = entity.getContent();
         this.statusType = entity.getStatusType();
         this.hits = entity.getHits();
-        //this.latitude = entity.getAddress().getLatitude();
-        //this.longitude = entity.getAddress().getLongitude();
     }
 }

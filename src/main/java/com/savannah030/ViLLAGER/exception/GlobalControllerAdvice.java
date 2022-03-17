@@ -20,8 +20,10 @@ public class GlobalControllerAdvice {
     private void postContruct() {
         redirectMap.put(ReturnCode.MEMBER_ID_DUPLICATE, "/member/sign-up");
         redirectMap.put(ReturnCode.BOARD_IDX_DUPLICATE,"/board/list");
-        redirectMap.put(ReturnCode.TEST, "/");
         //redirectMap.put(ReturnCode.SUCCESS, "/board/list");
+        redirectMap.put(ReturnCode.TEST, "/");
+        redirectMap.put(ReturnCode.FAIL_TO_CREATE_BOARD,"/board/list");
+        redirectMap.put(ReturnCode.BOARD_NOT_EXIST,"/board/list");
     }
 
     @ExceptionHandler({com.savannah030.ViLLAGER.exception.VillagerException.class})

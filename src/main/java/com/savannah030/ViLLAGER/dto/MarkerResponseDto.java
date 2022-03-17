@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class MarkerResponseDto {
+    private Long idx;
     private Double latitude;
     private Double longitude;
 
     @Builder
     public MarkerResponseDto(Board entity) {// Board 엔티티의 정보를 갖고 온다
+        this.idx = entity.getIdx();
         this.latitude = entity.getAddress().getLatitude();
         this.longitude = entity.getAddress().getLongitude();
     }
