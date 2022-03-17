@@ -12,6 +12,7 @@ public class OverlayResponseDto {
     private Long idx;
     private CategoryType categoryType;
     private String title;
+    private String content;
     private Double latitude;
     private Double longitude;
 
@@ -21,6 +22,7 @@ public class OverlayResponseDto {
         this.idx = entity.getIdx();
         this.categoryType = entity.getCategoryType();
         this.title = entity.getTitle();
+        this.content = entity.getContent();
         this.latitude = entity.getAddress().getLatitude();
         this.longitude = entity.getAddress().getLongitude();
     }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table
-public class Like {
+public class Wish {
 
     @Id
     @GeneratedValue
@@ -19,17 +19,17 @@ public class Like {
 
     @ManyToOne
     @JoinColumn(name = "member_idx")
-    private Member likeMember;
+    private Member wishMember;
 
     @ManyToOne
     @JoinColumn(name = "board_idx")
-    private Board likeBoard;
+    private Board wishBoard;
 
     @Builder
-    public Like(Long idx, Member member, Board board){
+    public Wish(Long idx, Member member, Board board){
         this.idx = idx;
-        this.likeMember = member;
-        this.likeBoard = board;
+        this.wishMember = member;
+        this.wishBoard = board;
     }
 
 }

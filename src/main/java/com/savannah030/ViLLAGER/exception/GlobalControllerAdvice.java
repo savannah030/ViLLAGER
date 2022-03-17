@@ -22,6 +22,9 @@ public class GlobalControllerAdvice {
         redirectMap.put(ReturnCode.BOARD_IDX_DUPLICATE,"/board/list");
         redirectMap.put(ReturnCode.TEST, "/");
         //redirectMap.put(ReturnCode.SUCCESS, "/board/list");
+        redirectMap.put(ReturnCode.FAIL_TO_CREATE_BOARD,"/board/list");
+        redirectMap.put(ReturnCode.BOARD_NOT_EXIST,"/board/list");
+        redirectMap.put(ReturnCode.MEMBER_NOT_EXIST,"/");
     }
 
     @ExceptionHandler({com.savannah030.ViLLAGER.exception.VillagerException.class})

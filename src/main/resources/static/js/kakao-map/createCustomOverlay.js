@@ -12,7 +12,7 @@ function createCustomOverlay(location, idx, category, title, content){
         position: location,
         content: result, // DOM 객체 생성
         //xAnchor: 0.3,
-        yAnchor: 1.1
+        //yAnchor: 1.1
     });
 
 }

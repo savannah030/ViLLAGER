@@ -1,4 +1,4 @@
-package com.savannah030.ViLLAGER.config.auth;
+package com.savannah030.ViLLAGER.config.auth.dto;
 
 import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.domain.enums.RoleType;
@@ -63,7 +63,7 @@ public class OAuthAttributesDto {
         return Member.builder()
                 .memberName(memberName)
                 .email(email)
-                .roleType(RoleType.GUEST)
+                .roleType(RoleType.USER)
                 .picture(picture)
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.savannah030.ViLLAGER.dto;
 
 import com.savannah030.ViLLAGER.domain.entity.Board;
+import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.domain.enums.CategoryType;
 import com.savannah030.ViLLAGER.domain.enums.StatusType;
 import lombok.Builder;
@@ -33,6 +34,8 @@ public class MyBoardResponseDto {
 
     private Double longitude;
 
+    private Member seller;
+
     @Builder
     public MyBoardResponseDto(Board entity){
         this.idx = entity.getIdx();
@@ -45,5 +48,6 @@ public class MyBoardResponseDto {
         this.hits = entity.getHits();
         //this.latitude = entity.getAddress().getLatitude();
         //this.longitude = entity.getAddress().getLongitude();
+        this.seller = entity.getSeller();
     }
 }
