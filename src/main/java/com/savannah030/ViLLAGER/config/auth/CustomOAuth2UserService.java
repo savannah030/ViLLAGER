@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -31,6 +30,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
+        // 1. 세팅
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
         /**
@@ -46,6 +46,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
          * key: locale, value: ko
          */
 
+        // 2. 정보 설정
         /**
          * NOTE: 현재 로그인 진행 중인 서비스를 구분하는 코드
          *  구글, 네이버, 카카오 등 인증 서버 구분
@@ -58,12 +59,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // NOTE: OAuth2User에서 반환하는 사용자 정보는 Map이기 때문에 값 하나하나를 변환해야함
         OAuthAttributesDto attributes = OAuthAttributesDto.of(registrationId, userNameAttributeKey, oAuth2User.getAttributes()); //3.
 
-        // 속성값 가지고 Member 엔티티 업데이트
+        // 3. 속성값 가지고 Member 엔티티 업데이트
         Member member = saveOrUpdate(attributes);
 
-        // SessionMemberDto : 세션에 사용자 정보 저장할 dto 클래스
+        // 4. 세션에 멤버 정보 저장 (SessionMemberDto : 세션에 사용자 정보 저장할 dto 클래스)
         httpSession.setAttribute("member", new SessionMemberDto(member));
 
+        // 5. DefaultOAuth2User 리턴
         // CONFUSED
         //  싱글톤으로 저장하는 이유?
         //  getRoleKey는 어디서 온거지?

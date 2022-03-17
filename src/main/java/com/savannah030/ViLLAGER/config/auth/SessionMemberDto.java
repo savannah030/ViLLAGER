@@ -1,4 +1,4 @@
-package com.savannah030.ViLLAGER.config.auth.dto;
+package com.savannah030.ViLLAGER.config.auth;
 
 import com.savannah030.ViLLAGER.domain.entity.Member;
 import lombok.Getter;
