@@ -1,6 +1,6 @@
 package com.savannah030.ViLLAGER.service;
 
-import com.savannah030.ViLLAGER.config.auth.SessionMemberDto;
+import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
 import com.savannah030.ViLLAGER.domain.entity.Board;
 import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.dto.BoardListResponseDto;

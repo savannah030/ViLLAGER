@@ -1,5 +1,7 @@
 package com.savannah030.ViLLAGER.config.auth;
 
+import com.savannah030.ViLLAGER.config.auth.dto.OAuthAttributesDto;
+import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
 import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

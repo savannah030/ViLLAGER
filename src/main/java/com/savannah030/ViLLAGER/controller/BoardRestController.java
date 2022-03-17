@@ -1,6 +1,6 @@
 package com.savannah030.ViLLAGER.controller;
 
-import com.savannah030.ViLLAGER.config.auth.SessionMemberDto;
+import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;

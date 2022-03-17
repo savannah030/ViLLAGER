@@ -1,7 +1,7 @@
 package com.savannah030.ViLLAGER.controller;
 
 import com.savannah030.ViLLAGER.config.auth.LoginUser;
-import com.savannah030.ViLLAGER.config.auth.SessionMemberDto;
+import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
 import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.service.BoardService;
 import lombok.RequiredArgsConstructor;

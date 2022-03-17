@@ -1,5 +1,6 @@
 package com.savannah030.ViLLAGER.config.auth;
 
+import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
