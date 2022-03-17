@@ -21,9 +21,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        SessionMemberDto user = (SessionMemberDto) httpSession.getAttribute("memberName");
-        if (user != null ){
-            model.addAttribute("user",user);
+        SessionMemberDto member = (SessionMemberDto) httpSession.getAttribute("member");
+        if (member != null ){
+            model.addAttribute("member",member);
+            //model.addAttribute("memberName",member.getMemberName());
+            //model.addAttribute("email",member.getEmail());
+            //model.addAttribute("picture",member.getPicture());
         }
         return "home";
     }
