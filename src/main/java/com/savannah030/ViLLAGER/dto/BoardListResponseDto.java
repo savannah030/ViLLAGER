@@ -1,6 +1,7 @@
 package com.savannah030.ViLLAGER.dto;
 
 import com.savannah030.ViLLAGER.domain.entity.Board;
+import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.domain.enums.CategoryType;
 import com.savannah030.ViLLAGER.domain.enums.StatusType;
 import lombok.Builder;
@@ -24,6 +25,8 @@ public class BoardListResponseDto {
 
     private Long hits;
 
+    private Member seller;
+
     @Builder
     public BoardListResponseDto(Board entity){
         this.idx = entity.getIdx();
@@ -32,5 +35,6 @@ public class BoardListResponseDto {
         this.content = entity.getContent();
         this.statusType = entity.getStatusType();
         this.hits = entity.getHits();
+        this.seller = entity.getSeller();
     }
 }

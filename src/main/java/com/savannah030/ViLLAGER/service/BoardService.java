@@ -28,8 +28,6 @@ public class BoardService {
 
     // CREATE
     public ReturnCode createBoard(BoardSaveRequestDto boardSaveRequestDto) {
-        // NOTE: 빌더 패턴을 통해 '서비스단'에서 엔티티 객체 생성하고 리포지토리에 저장
-        // CONFUSED: Board 엔티티 영속성?
         Long idx = boardRepository.save(boardSaveRequestDto.toEntity()).getIdx();
         Optional<Board> findBoard = boardRepository.findById(idx); // 글이 생성됐는지 확인
         if(!findBoard.isPresent()){
@@ -45,18 +43,11 @@ public class BoardService {
         // NOTE: 엔티티 객체 찾아서 있으면 그 엔티티를 DTO로 변환해서 반환
         //  엔티티 없으면 일단 새로운 DTO를 반환하기
         //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
-        Optional<Board> entity = Optional.ofNullable(boardRepository.findById(idx)
-                .orElseThrow(() -> new VillagerException(ReturnCode.BOARD_NOT_EXIST)));
-        // 엔티티 있으면
-        //log.info("BoardService");
-        //log.info("findMyBoardByIdx() 전: {}, {}", entity.get().getIdx(), entity.get().getHits());
-        /**
-         * if (entity.isPresent()){
-         *      entity.get().increaseHits();
-         * }
-         */
+        Optional<Board> entity = boardRepository.findById(idx);
+        // 이미 있는 게시글을 클릭한 경우는 조회수 증가
         entity.ifPresent(Board::increaseHits);
-        //log.info("findMyBoardByIdx() 후: {}, {}", entity.get().getIdx(), entity.get().getHits());
+        // 엔티티 객체 없으면 필드값을 초기화하지않은 dto 생성
+        // 있으면 그 객체의 필드로 dto 초기화
         return entity.map(MyBoardResponseDto::new).orElseGet(MyBoardResponseDto::new);
     }
 
@@ -72,7 +63,6 @@ public class BoardService {
     // NOTE: 트랜잭션 끝날 때 플러쉬 하면서 데이터 상태를 DB에 동기화
     @Transactional
     public ReturnCode updateBoard(Long idx, BoardUpdateRequestDto boardDto){
-        // CONFUSED: board 엔티티 영속성?
         Optional<Board> board = boardRepository.findById(idx);
         if(!board.isPresent()){
             return ReturnCode.FAIL_TO_CREATE_BOARD;
@@ -87,5 +77,5 @@ public class BoardService {
         }
     }
 
-    //DELETE
+    //DELETE 는 컨트롤러에서 바로 삭제
 }

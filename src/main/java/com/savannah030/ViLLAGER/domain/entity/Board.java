@@ -50,7 +50,7 @@ public class Board extends BaseEntity {
 
     // NOTE: 생성자 상단에 선언 시 생성자에 포함된 필드만 빌더에 포함
     @Builder
-    public Board(CategoryType categoryType, String title, String content, Address address){
+    public Board(CategoryType categoryType, String title, String content, Address address, Member seller){
         //this.idx = idx; // GenerationType.IDENTITY 기본키 자동생성 데이터베이스에 위임
         this.categoryType = categoryType;
         this.title = title;
@@ -58,6 +58,7 @@ public class Board extends BaseEntity {
         this.statusType = StatusType.ONSALE;    // 처음 등록한 글은 무조건 '판매중'
         this.hits = Long.valueOf("0");          // 조회수는 0으로 초기화
         this.address = address;
+        this.seller = seller;
     }
 
     // NOTE: 영속성 컨텍스트
