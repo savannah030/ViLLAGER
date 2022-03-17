@@ -68,4 +68,16 @@ public class MemberController {
         memberService.signUp(signUpForm);
         return "redirect:/"; //회원가입이 끝나면 홈페이지로 이동
     }
+
+    // ok
+    @GetMapping("/profile")
+    public String getProfileTest(){
+        Optional<Member> member = memberRepository.findByEmail("syhan97@gmail.com");
+        if(member.isPresent()){
+            log.info("member 잘 저장되었는지 : {}", member.get().getEmail()); //ok
+            return "/member/profile";
+        }
+        return "redirect:/";
+
+    }
 }
