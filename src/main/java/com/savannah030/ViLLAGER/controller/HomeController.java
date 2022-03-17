@@ -1,7 +1,7 @@
 package com.savannah030.ViLLAGER.controller;
 
+import com.savannah030.ViLLAGER.config.auth.LoginUser;
 import com.savannah030.ViLLAGER.config.auth.SessionMemberDto;
-import com.savannah030.ViLLAGER.exception.GlobalControllerAdvice;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
 import com.savannah030.ViLLAGER.exception.VillagerException;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,9 @@ public class HomeController {
     private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String home(Model model) {
-        SessionMemberDto member = (SessionMemberDto) httpSession.getAttribute("member");
+    public String home(Model model, @LoginUser SessionMemberDto member) {
         if (member != null ){
             model.addAttribute("member",member);
-            //model.addAttribute("memberName",member.getMemberName());
-            //model.addAttribute("email",member.getEmail());
-            //model.addAttribute("picture",member.getPicture());
         }
         return "home";
     }

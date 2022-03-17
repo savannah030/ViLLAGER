@@ -8,7 +8,6 @@ import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
-import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
