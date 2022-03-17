@@ -27,7 +27,7 @@ public class Chatmessage extends BaseEntity {
     private MessageType messageType;
     private String message;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_idx")
     private Chatroom chatroom;
 }

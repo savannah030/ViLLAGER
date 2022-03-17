@@ -21,7 +21,7 @@ public class Chatroom extends BaseEntity {
     private Long idx;
 
     //NOTE: 사용자는 여러개의 채팅방을 가질 수 있음
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_idx")
     private Member candBuyer; // 구매자만 채팅을 생성한다고 가정
 
