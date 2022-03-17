@@ -22,7 +22,7 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx; //인덱스
 
-    @Column(nullable = false)
+    @Column//(nullable = false)
     private String memberId; // 아이디
 
     @Column
@@ -31,7 +31,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column//(nullable = false)
     private String password;
 
     @Enumerated
