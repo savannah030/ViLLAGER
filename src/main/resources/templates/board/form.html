@@ -36,7 +36,7 @@
             <th style="padding:13px 0 0 15px">게시판 선택</th>
             <td>
                 <div class="pull-left">
-                    <select class="col-md-8 form-control input-sm" id="board_category">
+                    <select class="col-md-8 form-control input-sm" id="board_category" th:readonly="!${isSeller}">
                         <option>--분류--</option>
                         <option th:value="CLOTHES" th:selected="${boardResponseDto?.categoryType?.name() == 'CLOTHES'}">옷</option> <!-- th:value도 대문자로 써야 json 파싱에러 안남 -->
                         <option th:value="ELECTRONICS" th:selected="${boardResponseDto?.categoryType?.name() == 'ELECTRONICS'}">전자기기</option>
@@ -47,13 +47,13 @@
         <!-- title -->
         <tr>
             <th style="padding:13px 0 0 15px;">제목</th>
-            <td><input id="board_title" type="text" class="col-md-8 form-control input-sm" th:value="${boardResponseDto?.title}"/></td>
+            <td><input id="board_title" type="text" class="col-md-8 form-control input-sm" th:readonly="!${isSeller}" th:value="${boardResponseDto?.title}"/></td>
         </tr>
         <!-- content -->
         <tr>
             <th style="padding:13px 0 0 15px;">내용</th>
             <td><textarea id="board_content" class="col-md-8 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
-                          th:text="${boardResponseDto?.content}"></textarea><span class="help-block"></span>
+                          th:readonly="!${isSeller}" th:text="${boardResponseDto?.content}"></textarea><span class="help-block"></span>
             </td>
         </tr>
         <!-- statusType -->
@@ -61,7 +61,7 @@
             <th style="padding:13px 0 0 15px">판매 상태</th> <!-- 글을 수정할때만 판매 상태 바꿀 수 있도록 -->
             <td>
                 <div class="pull-left">
-                    <select th:disabled="!${boardResponseDto?.idx}" class="col-md-8 form-control input-sm" id="board_status">
+                    <select th:disabled="!${boardResponseDto?.idx}" th:readonly="!${isSeller}" class="col-md-8 form-control input-sm" id="board_status">
                         <option>--분류--</option>
                         <option th:value="ONSALE" th:selected="${boardResponseDto?.statusType?.name() == 'ONSALE'}">판매중</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
                         <option th:value="RESERVED" th:selected="${boardResponseDto?.statusType?.name() == 'RESERVED'}">예약중</option>

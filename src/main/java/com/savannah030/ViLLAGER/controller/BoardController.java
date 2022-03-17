@@ -26,13 +26,20 @@ public class BoardController {
      *  작성자만 글 수정,삭제할 수 있도록
      */
     @GetMapping("/form")
-    public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model, @LoginUser SessionMemberDto seller){
+    public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model, @LoginUser SessionMemberDto member){
 
-        MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx); // 조회수 증가
-
-        if (seller.getEmail().equals(dto.getSeller().getEmail())){  // 작성자인지 체크(이메일이 같은 사용자는 같은 사용자라고 판단)
+        // FIXME: 컨트롤러에 이렇게 분기문 많은 게 맞을까..
+        MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx);
+        // 글 작성하는 경우
+        if (dto.getSeller()==null){
             model.addAttribute("isSeller",true);
-        } else{
+        }
+        // 이미 존재하는 글이고 세션==작성자인 경우
+        else if (member.getEmail().equals(dto.getSeller().getEmail())){  // (이메일이 같은 사용자는 같은 사용자라고 판단)
+            model.addAttribute("isSeller",true);
+        }
+        // 이미 존재하는 글이고 세션!= 작성자인 경우
+        else{
             model.addAttribute("isSeller",false);
         }
         model.addAttribute("boardResponseDto", dto);

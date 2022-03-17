@@ -63,7 +63,7 @@ public class OAuthAttributesDto {
         return Member.builder()
                 .memberName(memberName)
                 .email(email)
-                .roleType(RoleType.GUEST)
+                .roleType(RoleType.USER)
                 .picture(picture)
                 .build();
     }

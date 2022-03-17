@@ -32,17 +32,17 @@ public class BoardService {
     // CREATE
     /**
      * 1. 세션에 있는 사용자의 정보로 사용자 찾기
-     * 2. 사용자가 존재하지 않으면 오류 리턴
+     * 2. 사용자가 존재하지 않으면 오류 리턴 // FIXME: OAuth2 로그인할 때 사용자 저장했으니까 member 있어야할 것 같은데..
      * 3. 글을 저장하고 인덱스 리턴(이 때 사용자의 정보도 같이 저장)
      * 4. 글이 생성됐는지 확인
      */
     public ReturnCode createBoard(BoardSaveRequestDto boardSaveRequestDto, SessionMemberDto sessionMember) {
 
         Optional<Member> member = memberRepository.findByEmail(sessionMember.getEmail()); // 1.
+        log.info("memberEmail:{}", member.get().getEmail());
         if(!member.isPresent()){ // 2.
             return ReturnCode.MEMBER_NOT_EXIST;
         }
-
         Long idx = boardRepository.save(boardSaveRequestDto.toEntity(member.get())).getIdx(); //3.
         Optional<Board> findBoard = boardRepository.findById(idx); // 4.
         if(!findBoard.isPresent()){
@@ -53,7 +53,7 @@ public class BoardService {
 
     // READ
     // NOTE: 엔티티 객체 찾아서 있으면 그 엔티티를 DTO로 변환해서 반환
-    //  엔티티 없으면 일단 새로운 DTO를 반환하기
+    //  엔티티 없으면 일단 새로운 DTO를 반환하기(seller는 설정X)
     //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
     @Transactional
     public MyBoardResponseDto findMyBoardByIdx(Long idx){

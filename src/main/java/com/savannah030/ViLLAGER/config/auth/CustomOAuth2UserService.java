@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -63,6 +64,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // 3. 속성값 가지고 Member 엔티티 업데이트
         Member member = saveOrUpdate(attributes);
+        //log.info("findByEmail in CustomOAuth2UserService :{}",memberRepository.findByEmail(member.getEmail()).get().getMemberName()); // ok
 
         // 4. 세션에 멤버 정보 저장 (SessionMemberDto : 세션에 사용자 정보 저장할 dto 클래스)
         httpSession.setAttribute("member", new SessionMemberDto(member));
@@ -78,8 +80,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey());
     }
 
-    //@Transactional
-    private Member saveOrUpdate(OAuthAttributesDto attributes){
+    @Transactional
+    Member saveOrUpdate(OAuthAttributesDto attributes){
         Member member = memberRepository.findByEmail(attributes.getEmail())
                 // 이미 가입한 사용자이면(해당 이메일을 쓰는 사용자가 있으면) 엔티티 업데이트
                 .map(entity -> entity.update(attributes.getMemberName(), attributes.getPicture()))
