@@ -4,9 +4,11 @@ import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.domain.enums.RoleType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+@Slf4j
 @Getter
 public class OAuthAttributesDto {
     private Map<String, Object> attributes;
@@ -31,6 +33,18 @@ public class OAuthAttributesDto {
      * @return                      구글 ...
      */
     public static OAuthAttributesDto of(String registerId, String nameAttributeKey, Map<String, Object> attributes) {
+        /**
+        * attributes.forEach((key,value)
+        *    ->log.info("key: {}, value: {}",key,value));
+        * key: sub, value: 108126460795166503826
+        * key: name, value: Yooni윤승
+        * key: given_name, value: 윤승
+        * key: family_name, value: Yooni
+        * key: picture, value: https://lh3.googleusercontent.com/a/AATXAJxq-AZAJxbkOox2nql6hYeHsiUhT22T7c9FJEKh=s96-c
+        * key: email, value: syhan97@gmail.com
+        * key: email_verified, value: true
+        * key: locale, value: ko
+        */
         return ofGoogle(nameAttributeKey, attributes);
     }
 
