@@ -81,8 +81,8 @@
     </div>
     <div class="pull-right">
         <button th:if="!${boardResponseDto?.idx}" type="button" class="btn btn-primary" id="btn-save">저장</button>
-        <button th:if="${boardResponseDto?.idx}" type="button" class="btn btn-info" id="btn-update">수정</button>
-        <button th:if="${boardResponseDto?.idx}" type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+        <button th:if="${boardResponseDto?.idx} and ${isSeller}" type="button" class="btn btn-info" id="btn-update">수정</button>
+        <button th:if="${boardResponseDto?.idx} and ${isSeller}" type="button" class="btn btn-danger" id="btn-delete">삭제</button>
     </div>
 </div>
 

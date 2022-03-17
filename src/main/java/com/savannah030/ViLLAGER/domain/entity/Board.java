@@ -41,7 +41,7 @@ public class Board extends BaseEntity {
 
     @Embedded Address address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_idx", nullable = false) // NOTE: 연관관계 매핑(객체와 테이블 연결)
     private Member seller; // 이 board를 작성한 사람
 

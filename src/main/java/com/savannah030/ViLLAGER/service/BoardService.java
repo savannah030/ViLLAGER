@@ -52,12 +52,11 @@ public class BoardService {
     }
 
     // READ
-    // TODO: 다른사람의 게시글 찾는 것도 구현해야함
+    // NOTE: 엔티티 객체 찾아서 있으면 그 엔티티를 DTO로 변환해서 반환
+    //  엔티티 없으면 일단 새로운 DTO를 반환하기
+    //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
     @Transactional
     public MyBoardResponseDto findMyBoardByIdx(Long idx){
-        // NOTE: 엔티티 객체 찾아서 있으면 그 엔티티를 DTO로 변환해서 반환
-        //  엔티티 없으면 일단 새로운 DTO를 반환하기
-        //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
         Optional<Board> entity = boardRepository.findById(idx);
         // 이미 있는 게시글을 클릭한 경우는 조회수 증가
         entity.ifPresent(Board::increaseHits);

@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
-
 @Slf4j
 @Controller
 @RequestMapping("/board")
@@ -23,11 +21,20 @@ import javax.servlet.http.HttpSession;
 public class BoardController {
 
     private final BoardService boardService;
-    private final HttpSession httpSession;
 
+    /** 게시글 보여주기
+     *  작성자만 글 수정,삭제할 수 있도록
+     */
     @GetMapping("/form")
-    public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
+    public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model, @LoginUser SessionMemberDto seller){
+
         MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx); // 조회수 증가
+
+        if (seller.getEmail().equals(dto.getSeller().getEmail())){  // 작성자인지 체크(이메일이 같은 사용자는 같은 사용자라고 판단)
+            model.addAttribute("isSeller",true);
+        } else{
+            model.addAttribute("isSeller",false);
+        }
         model.addAttribute("boardResponseDto", dto);
         return "/board/form";
     }
