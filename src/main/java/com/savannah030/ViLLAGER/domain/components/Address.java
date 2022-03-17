@@ -13,10 +13,10 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class Address {
 
-    @Column
+    @Column(nullable = false)
     private double latitude;
 
-    @Column
+    @Column(nullable = false)
     private double longitude;
 
 }

@@ -27,10 +27,10 @@ public class Board extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
 
-    @Column
+    @Column(nullable = false) //TODO @Valid 검증
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
     @Enumerated(EnumType.STRING)
@@ -42,7 +42,7 @@ public class Board extends BaseEntity {
     @Embedded Address address;
 
     @ManyToOne
-    @JoinColumn(name = "member_idx") // NOTE: 연관관계 매핑(객체와 테이블 연결)
+    @JoinColumn(name = "member_idx", nullable = false) // NOTE: 연관관계 매핑(객체와 테이블 연결)
     private Member seller; // 이 board를 작성한 사람
 
     @OneToMany(mappedBy = "wishBoard")
@@ -51,7 +51,7 @@ public class Board extends BaseEntity {
     // NOTE: 생성자 상단에 선언 시 생성자에 포함된 필드만 빌더에 포함
     @Builder
     public Board(CategoryType categoryType, String title, String content, Address address){
-        //this.idx = idx; // NOTE: GenerationType.IDENTITY 기본키 자동생성 데이터베이스에 위임
+        //this.idx = idx; // GenerationType.IDENTITY 기본키 자동생성 데이터베이스에 위임
         this.categoryType = categoryType;
         this.title = title;
         this.content = content;
@@ -65,7 +65,7 @@ public class Board extends BaseEntity {
         this.categoryType = boardDto.getCategoryType();
         this.title = boardDto.getTitle();
         this.content = boardDto.getContent();
-        //this.statusType = boardDto.getStatusType(); //FIXME:
+        this.statusType = boardDto.getStatusType();
         // 조회수는 업데이트할 필요없음
         this.address = new Address(boardDto.getLatitude(), boardDto.getLongitude());
     }
@@ -79,16 +79,4 @@ public class Board extends BaseEntity {
         this.wishMembers.add(wish);
     }
 
-    // CONFUSED: update 함수 있는데 굳이 status만 바꾸는 함수들 만들어야할까?
-    public void makeBoardOnSale(){ // FIXME: 함수명 뭘로..
-        this.statusType = StatusType.ONSALE;
-    }
-
-    public void makeBoardReserved(){ // FIXME: 함수명 뭘로..
-        this.statusType = StatusType.RESERVED;
-    }
-
-    public void makeBoardSoldOut(){ // FIXME: 함수명 뭘로..
-        this.statusType = StatusType.SOLDOUT;
-    }
 }
