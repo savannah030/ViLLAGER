@@ -22,11 +22,11 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx; //인덱스
 
-    @Column//(nullable = false)
-    private String memberId; // 아이디
-
     @Column
-    private String memberName; // 닉네임(처음에는 설정안해도됨)
+    private String memberId;
+
+    @Column(nullable = false)
+    private String memberName;
 
     @Column(nullable = false)
     private String email;
