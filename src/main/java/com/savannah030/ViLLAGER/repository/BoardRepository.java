@@ -10,10 +10,7 @@ import java.util.List;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    Board findByLatitude(double latitude); //JpaMappingTest용
-    Board findByLongitude(double longitude);
 
-    //here
-    @Query("select b from Board b where b.latitude<=:latitude+0.001*10 and b.longitude<=:longitude+0.001*10")
+    @Query("select b from Board b where b.address.latitude<=:latitude+0.1*10 and b.address.longitude<=:longitude+0.1*10")
     List<Board> findAllByLatitudeAndLongitude(@Param("latitude")Double latitude,@Param("longitude")Double longitude);
 }

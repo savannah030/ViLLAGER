@@ -6,7 +6,6 @@ import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
-import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +44,9 @@ public class BoardService {
         // NOTE: 엔티티 객체 찾아서 있으면 그 엔티티를 DTO로 변환해서 반환
         //  엔티티 없으면 일단 새로운 DTO를 반환하기
         //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
-        Optional<Board> entity = Optional.ofNullable(boardRepository.findById(idx)
-                .orElseThrow(() -> new VillagerException(ReturnCode.BOARD_NOT_EXIST)));
+        Optional<Board> entity = boardRepository.findById(idx);
+                // orElseThrow 있으면 글 새로 생성할 때 오류라고 판단하고 던져버림
+                //.orElseThrow(() -> new VillagerException(ReturnCode.BOARD_NOT_EXIST)));
         // 엔티티 있으면
         //log.info("BoardService");
         //log.info("findMyBoardByIdx() 전: {}, {}", entity.get().getIdx(), entity.get().getHits());

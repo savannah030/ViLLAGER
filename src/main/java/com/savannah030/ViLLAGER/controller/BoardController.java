@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
 
     private final BoardService boardService;
-
-    public BoardController(BoardService boardService){
-        this.boardService = boardService;
-    }
 
     @GetMapping("/form")
     public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model){
