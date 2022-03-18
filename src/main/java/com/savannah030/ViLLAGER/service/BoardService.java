@@ -8,6 +8,7 @@ import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
+import com.savannah030.ViLLAGER.exception.VillagerException;
 import com.savannah030.ViLLAGER.repository.BoardRepository;
 import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +32,16 @@ public class BoardService {
 
     // CREATE
     /**
-     * 1. 세션에 있는 사용자의 정보로 사용자 찾기
-     * 2. 사용자가 존재하지 않으면 오류 리턴 // FIXME: OAuth2 로그인할 때 사용자 저장했으니까 member 있어야할 것 같은데..
-     * 3. 글을 저장하고 인덱스 리턴(이 때 사용자의 정보도 같이 저장)
-     * 4. 글이 생성됐는지 확인
+     * 1. 세션에 있는 사용자의 정보로 사용자 찾기 (사용자가 존재하지 않으면 오류 리턴)
+     * 2. 글을 저장하고 인덱스 리턴(이 때 사용자의 정보도 같이 저장)
+     * 3. 글이 생성됐는지 확인
      */
     public ReturnCode createBoard(BoardSaveRequestDto boardSaveRequestDto, SessionMemberDto sessionMember) {
 
-        Optional<Member> member = memberRepository.findByEmail(sessionMember.getEmail()); // 1.
-        log.info("memberEmail:{}", member.get().getEmail());
-        if(!member.isPresent()){ // 2.
-            return ReturnCode.MEMBER_NOT_EXIST;
-        }
-        Long idx = boardRepository.save(boardSaveRequestDto.toEntity(member.get())).getIdx(); //3.
-        Optional<Board> findBoard = boardRepository.findById(idx); // 4.
+        Member member = memberRepository.findById(sessionMember.getIdx()).orElseThrow(() -> new VillagerException(ReturnCode.MEMBER_NOT_EXIST)); // 1.
+
+        Long idx = boardRepository.save(boardSaveRequestDto.toEntity(member)).getIdx(); // 2.
+        Optional<Board> findBoard = boardRepository.findById(idx); // 3.
         if(!findBoard.isPresent()){
             return ReturnCode.FAIL_TO_CREATE_BOARD;
         }
