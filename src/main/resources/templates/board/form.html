@@ -61,7 +61,7 @@
             <th style="padding:13px 0 0 15px">판매 상태</th> <!-- 글을 수정할때만 판매 상태 바꿀 수 있도록 -->
             <td>
                 <div class="pull-left">
-                    <select th:disabled="!${boardResponseDto?.idx}" th:readonly="!${isSeller}" class="col-md-8 form-control input-sm" id="board_status">
+                    <select th:disabled="!${boardResponseDto?.idx}" class="col-md-8 form-control input-sm" id="board_status">
                         <option>--분류--</option>
                         <option th:value="ONSALE" th:selected="${boardResponseDto?.statusType?.name() == 'ONSALE'}">판매중</option> <!--NOTE: th:value도 대문자로 써야 json 파싱에러 안남 -->
                         <option th:value="RESERVED" th:selected="${boardResponseDto?.statusType?.name() == 'RESERVED'}">예약중</option>
@@ -78,6 +78,8 @@
     </table>
     <div class="pull-left">
         <a href="/board/list" class="btn btn-default">목록으로</a>
+        <button th:if="${boardResponseDto?.idx}" type="button" class="btn btn btn-info" id="btn-heart">찜</button>
+        <!--FIXME 비로그인한 사용자에게도 버튼이 보이되, 누르면 로그인 창으로 이동하기 -->
     </div>
     <div class="pull-right">
         <button th:if="!${boardResponseDto?.idx}" type="button" class="btn btn-primary" id="btn-save">저장</button>

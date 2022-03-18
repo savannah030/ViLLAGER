@@ -2,7 +2,7 @@ package com.savannah030.ViLLAGER.controller;
 
 import com.savannah030.ViLLAGER.config.auth.LoginUser;
 import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
-import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
+import com.savannah030.ViLLAGER.dto.BoardResponseDto;
 import com.savannah030.ViLLAGER.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class BoardController {
     public String form(@RequestParam(value="idx", defaultValue = "0")Long idx, Model model, @LoginUser SessionMemberDto member){
 
         // FIXME: 컨트롤러에 이렇게 분기문 많은 게 맞을까..
-        MyBoardResponseDto dto = boardService.findMyBoardByIdx(idx);
+        BoardResponseDto dto = boardService.findMyBoardByIdx(idx);
         // 글 작성하는 경우
         if (dto.getSeller()==null){
             model.addAttribute("isSeller",true);

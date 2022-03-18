@@ -4,7 +4,7 @@ import com.savannah030.ViLLAGER.config.auth.dto.SessionMemberDto;
 import com.savannah030.ViLLAGER.domain.entity.Board;
 import com.savannah030.ViLLAGER.domain.entity.Member;
 import com.savannah030.ViLLAGER.dto.BoardListResponseDto;
-import com.savannah030.ViLLAGER.dto.MyBoardResponseDto;
+import com.savannah030.ViLLAGER.dto.BoardResponseDto;
 import com.savannah030.ViLLAGER.dto.BoardSaveRequestDto;
 import com.savannah030.ViLLAGER.dto.BoardUpdateRequestDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
@@ -33,15 +33,24 @@ public class BoardService {
     // CREATE
     /**
      * 1. 세션에 있는 사용자의 정보로 사용자 찾기 (사용자가 존재하지 않으면 오류 리턴)
-     * 2. 글을 저장하고 인덱스 리턴(이 때 사용자의 정보도 같이 저장)
-     * 3. 글이 생성됐는지 확인
+     * 2. dto를 엔티티로 변환 (이 때 사용자의 정보도 같이 저장)
+     * 3. 글을 저장하고 인덱스 리턴
+     * 4. Member 엔티티의 myBoards에 작성한 board 추가
+     * 5. 글이 생성됐는지 확인(3번의 인덱스 이용)
      */
+    @Transactional
     public ReturnCode createBoard(BoardSaveRequestDto boardSaveRequestDto, SessionMemberDto sessionMember) {
 
-        Member member = memberRepository.findById(sessionMember.getIdx()).orElseThrow(() -> new VillagerException(ReturnCode.MEMBER_NOT_EXIST)); // 1.
-
-        Long idx = boardRepository.save(boardSaveRequestDto.toEntity(member)).getIdx(); // 2.
-        Optional<Board> findBoard = boardRepository.findById(idx); // 3.
+        // 1.
+        Member member = memberRepository.findById(sessionMember.getIdx()).orElseThrow(() -> new VillagerException(ReturnCode.MEMBER_NOT_EXIST));
+        // 2.
+        Board board = boardSaveRequestDto.toEntity(member);
+        // 3.
+        Long idx = boardRepository.save(board).getIdx();
+        // 4.
+        member.addMyBoard(board);
+        Optional<Board> findBoard = boardRepository.findById(idx);
+        // 5.
         if(!findBoard.isPresent()){
             return ReturnCode.FAIL_TO_CREATE_BOARD;
         }
@@ -53,13 +62,13 @@ public class BoardService {
     //  엔티티 없으면 일단 새로운 DTO를 반환하기(seller는 설정X)
     //  엔티티 생성은 BoardService.createBoard에서!!!! (저장버튼 누를 때)
     @Transactional
-    public MyBoardResponseDto findMyBoardByIdx(Long idx){
+    public BoardResponseDto findMyBoardByIdx(Long idx){
         Optional<Board> entity = boardRepository.findById(idx);
         // 이미 있는 게시글을 클릭한 경우는 조회수 증가
         entity.ifPresent(Board::increaseHits);
         // 엔티티 객체 없으면 필드값을 초기화하지않은 dto 생성
         // 있으면 그 객체의 필드로 dto 초기화
-        return entity.map(MyBoardResponseDto::new).orElseGet(MyBoardResponseDto::new);
+        return entity.map(BoardResponseDto::new).orElseGet(BoardResponseDto::new);
     }
 
     // READ LIST

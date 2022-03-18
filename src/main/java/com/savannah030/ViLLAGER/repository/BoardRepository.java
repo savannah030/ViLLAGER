@@ -2,6 +2,8 @@ package com.savannah030.ViLLAGER.repository;
 
 import com.savannah030.ViLLAGER.domain.entity.Board;
 import com.savannah030.ViLLAGER.domain.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +21,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("select b from Board b where b.address.latitude<=:latitude+0.001*10 and b.address.longitude<=:longitude+0.001*10")
     List<Board> findAllByLatitudeAndLongitude(@Param("latitude")Double latitude,@Param("longitude")Double longitude);
+
+    @Query(value = "select b from Board b where b.seller.idx = :memberId")
+    Page<Board> findAllByMember(@Param("memberId") Long memberId, Pageable pageable);
 }

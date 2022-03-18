@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
-public class MyBoardResponseDto {
+public class BoardResponseDto {
 
     private LocalDateTime createdDate;
 
@@ -37,7 +37,7 @@ public class MyBoardResponseDto {
     private Member seller;
 
     @Builder
-    public MyBoardResponseDto(Board entity){
+    public BoardResponseDto(Board entity){
         this.idx = entity.getIdx();
         this.createdDate = entity.getCreatedDate();
         this.updatedDate = entity.getUpdatedDate();
