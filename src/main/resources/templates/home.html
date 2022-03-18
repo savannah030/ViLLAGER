@@ -27,17 +27,10 @@
     <p>
         <a href="/logout" class="btn btn-info active" role="button">Logout</a>
     </p>
-</th:block>
-<!--
-<th:block th:if="${authMember}">
-    <p><span th:text="{authMember.name}">님, 환영합니다.</span></p>
     <p>
-        <a href="" th:href="@{/member/password}">[비밀번호 변경]</a>
-        <a href="" th:href="@{/member/logout}">[로그아웃]</a>
+        <a href="/member/profile" class="btn btn-info active" role="button">프로필 보기</a>
     </p>
 </th:block>
--->
-<!--/body-->
 
 <div th:replace="layout/footer::footer"></div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

@@ -45,8 +45,8 @@ public class Member extends BaseEntity {
     private List<Board> myBoards = new ArrayList<>(); //FIXME
 
     //NOTE: 사용자가좋아한글과 사용자는 다대다 관계
-    @OneToMany(mappedBy = "wishMember", fetch = FetchType.LAZY)
-    private List<Wish> wishBoards = new ArrayList<>(); //FIXME
+    @OneToMany(mappedBy = "heartMember", fetch = FetchType.LAZY)
+    private List<Heart> heartBoards = new ArrayList<>(); //FIXME
 
     @OneToMany(mappedBy = "candBuyer", fetch = FetchType.LAZY)
     private List<Chatroom> chatrooms = new LinkedList<>();
@@ -60,7 +60,7 @@ public class Member extends BaseEntity {
         this.picture = picture;
         this.password = password;
         //this.myBoards = myBoards;
-        //this.wishBoards = wishBoards;
+        //this.heartBoards = heartBoards;
     }
 
     public Member update(String memberName, String picture){
@@ -68,5 +68,9 @@ public class Member extends BaseEntity {
         this.picture = picture;
         return this;
     }
-    // TODO: 비밀번호 변경
+
+    public void addMyBoard(Board board){
+        this.myBoards.add(board);
+    }
+
 }
