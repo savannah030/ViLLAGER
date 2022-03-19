@@ -6,7 +6,7 @@
 
 
 # 기술스택
-Spring Boot, Spring MVC, JPA, MySQL, REST API, 카카오 지도 API 
+Spring Boot, Spring MVC, JPA, 카카오 지도 API 
 # 기능
 ## 회원가입,로그인
 OAuth2를 이용한 구글 로그인
