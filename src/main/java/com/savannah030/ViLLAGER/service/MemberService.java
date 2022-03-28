@@ -1,22 +1,31 @@
 package com.savannah030.ViLLAGER.service;
 
 import com.savannah030.ViLLAGER.controller.form.SignUpForm;
+import com.savannah030.ViLLAGER.domain.entity.Board;
 import com.savannah030.ViLLAGER.domain.entity.Member;
+import com.savannah030.ViLLAGER.dto.MyListDto;
 import com.savannah030.ViLLAGER.exception.ReturnCode;
 import com.savannah030.ViLLAGER.exception.VillagerException;
+import com.savannah030.ViLLAGER.repository.BoardRepository;
 import com.savannah030.ViLLAGER.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
-    final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
     /*
      * 회원가입
@@ -35,40 +44,15 @@ public class MemberService {
         memberRepository.save(encryptedMember);
     }
 
-
-    /*
-     * 소셜 회원가입(OAuth2)
-     */
-
-    /*
-     * 로그인
-     */
-
-    /*
-     * 로그아웃
-     */
-
-    /*
-     * 탈퇴
-     * 1. 프로필,글,리뷰,채팅 다나가야함
-     */
-
-    /*
-     * 비밀번호 확인
-     */
-
-    /*
-     * 비밀번호 변경
-     */
-
     /*
      * 내가 쓴 글 가져오기
      */
-    /*
-    List<Board> getMyBoards(Long Id){
 
+    public Page<MyListDto> getMyBoards(Long idx, Pageable pageable){
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber()-1, pageable.getPageSize());
+        Page<Board> boardList = boardRepository.findAllByMember(idx, pageable);
+        return new PageImpl<>(boardList.stream().map(MyListDto::new).collect(Collectors.toList()), pageable,boardList.getTotalElements());
     }
-    */
 
 
     /*
